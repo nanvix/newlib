@@ -113,19 +113,19 @@ rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2)$(filter $(subst *
 # both libc.a and libm.a.  We build them in libm.a and copy them over,
 # along with some required supporting routines.
 MATHOBJS_IN_LIBC = \
-	libm_a-s_fpclassify.o libm_a-sf_fpclassify.o \
-	libm_a-s_isinf.o libm_a-sf_isinf.o \
-	libm_a-s_isnan.o libm_a-sf_isnan.o \
-	libm_a-s_isinfd.o libm_a-sf_isinff.o \
-	libm_a-s_isnand.o libm_a-sf_isnanf.o \
-	libm_a-s_nan.o libm_a-sf_nan.o \
-	libm_a-s_ldexp.o libm_a-sf_ldexp.o \
-	libm_a-s_frexp.o libm_a-sf_frexp.o libm_a-frexpl.o \
-	libm_a-s_modf.o \
-	libm_a-sf_modf.o libm_a-s_scalbn.o \
-	libm_a-sf_scalbn.o \
-	libm_a-s_finite.o libm_a-sf_finite.o \
-	libm_a-s_copysign.o libm_a-sf_copysign.o
+	a-s_fpclassify.o a-sf_fpclassify.o \
+	a-s_isinf.o a-sf_isinf.o \
+	a-s_isnan.o a-sf_isnan.o \
+	a-s_isinfd.o a-sf_isinff.o \
+	a-s_isnand.o a-sf_isnanf.o \
+	a-s_nan.o a-sf_nan.o \
+	a-s_ldexp.o a-sf_ldexp.o \
+	a-s_frexp.o a-sf_frexp.o a-frexpl.o \
+	a-s_modf.o \
+	a-sf_modf.o a-s_scalbn.o \
+	a-sf_scalbn.o \
+	a-s_finite.o a-sf_finite.o \
+	a-s_copysign.o a-sf_copysign.o
 
 ## Place the libm_a objects in libc/ to keep the top dir tidy.
 stamp-libc-math-objects: libm.a
