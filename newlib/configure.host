@@ -511,6 +511,10 @@ case "${host}" in
 	unix_dir=unix
 	;;
   i[34567]86-*-nanvix*)
+ 	have_crt0=no
+	unix_dir=
+	posix_dir=
+	sys_dir=nanvix
 	;;
 
   m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)
