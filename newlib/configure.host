@@ -511,7 +511,7 @@ case "${host}" in
 	unix_dir=unix
 	;;
   i[34567]86-*-nanvix*)
- 	have_crt0=no
+ 	have_crt0=yes
 	unix_dir=
 	posix_dir=
 	sys_dir=nanvix
