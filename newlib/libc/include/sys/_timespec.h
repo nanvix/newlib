@@ -47,6 +47,10 @@ typedef	_TIME_T_	time_t;
 struct timespec {
 	time_t	tv_sec;		/* seconds */
 	long	tv_nsec;	/* and nanoseconds */
+#if defined(__nanvix__)
+} __attribute__((__packed__));
+#else
 };
+#endif
 
 #endif /* !_SYS__TIMESPEC_H_ */

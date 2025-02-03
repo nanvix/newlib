@@ -515,6 +515,7 @@ case "${host}" in
 	unix_dir=
 	posix_dir=
 	sys_dir=nanvix
+	have_sys_mach_dir=yes
 	;;
 
   m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)

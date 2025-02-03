@@ -210,7 +210,11 @@ typedef	__uint32_t	__socklen_t;
 #endif
 
 typedef	int		__nl_item;
+
+#ifndef __machine_nlink_t_defined
 typedef	unsigned short	__nlink_t;
+#endif
+
 typedef	long		__suseconds_t;	/* microseconds (signed) */
 typedef	unsigned long	__useconds_t;	/* microseconds (unsigned) */
 

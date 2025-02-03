@@ -44,7 +44,7 @@ struct	stat
   struct timespec st_ctim;
   blksize_t     st_blksize;
   blkcnt_t	st_blocks;
-#if !defined(__rtems__)
+#if !defined(__rtems__) && !defined(__nanvix__)
   long		st_spare4[2];
 #endif
 #endif
