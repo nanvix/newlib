@@ -32,6 +32,10 @@ typedef unsigned int pthread_t;          /* identify a thread */
 typedef __uint32_t pthread_t;            /* identify a thread */
 #endif
 
+#if defined(__nanvix__)
+#define PTHREAD_NULL 0
+#endif
+
 /* P1003.1c/D10, p. 118-119 */
 #define PTHREAD_SCOPE_PROCESS 0
 #define PTHREAD_SCOPE_SYSTEM  1
