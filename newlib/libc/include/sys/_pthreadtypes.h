@@ -61,7 +61,11 @@ typedef struct pthread_attr_s {
 typedef struct {
   int is_initialized;
   void *stackaddr;
+#if defined(__nanvix__)
+  size_t stacksize;
+#else
   int stacksize;
+#endif
   int contentionscope;
   int inheritsched;
   int schedpolicy;
