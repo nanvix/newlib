@@ -401,6 +401,10 @@ extern "C" {
 
 #endif
 
+#ifdef __nanvix__
+#define _POSIX_THREADS				1
+#endif
+
 /* XMK loosely adheres to POSIX -- 1003.1 */
 #ifdef __XMK__
 #define _POSIX_THREADS				1
