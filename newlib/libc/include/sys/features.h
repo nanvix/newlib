@@ -403,6 +403,10 @@ extern "C" {
 
 #ifdef __nanvix__
 #define _POSIX_THREADS				1
+
+/* UNIX98 added some new pthread mutex attributes */
+#define _UNIX98_THREAD_MUTEX_ATTRIBUTES         1
+
 #endif
 
 /* XMK loosely adheres to POSIX -- 1003.1 */
