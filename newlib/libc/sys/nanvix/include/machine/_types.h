@@ -39,4 +39,7 @@ typedef unsigned long long __ino_t;
 typedef	unsigned int __uid_t;
 #define	__machine_uid_t_defined
 
+typedef unsigned short __reclen_t;
+#define __machine_reclen_t_defined
+
 #endif /* _MACHINE__TYPES_H */

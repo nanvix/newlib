@@ -199,6 +199,13 @@ typedef	__clockid_t	clockid_t;
 #define	_CLOCKID_T_DECLARED
 #endif
 
+#if defined(__nanvix__)
+#ifndef _RECLEN_T_DECLARED
+typedef __reclen_t reclen_t;
+#define _RECLEN_T_DECLARED
+#endif
+#endif
+
 #if !defined(__timer_t_defined) && !defined(_TIMER_T_DECLARED)
 typedef	__timer_t	timer_t;
 #define	__timer_t_defined
