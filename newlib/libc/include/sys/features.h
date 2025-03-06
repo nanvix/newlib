@@ -402,6 +402,7 @@ extern "C" {
 #endif
 
 #ifdef __nanvix__
+#define _POSIX_REALTIME_SIGNALS		1
 #define _POSIX_THREADS				1
 
 /* UNIX98 added some new pthread mutex attributes */

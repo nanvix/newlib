@@ -69,11 +69,20 @@ struct sigevent {
 typedef struct {
   int          si_signo;    /* Signal number */
   int          si_code;     /* Cause of the signal */
+#if defined(__nanvix__)
+#if __XSI_VISIBLE >= 500
+  int si_errno;				      /* Errno associated with signal */
+#endif /* __XSI_VISIBLE >= 500 */
+  pid_t si_pid;              /* Sending process ID */
+  uid_t si_uid;              /* Real user ID of sending process */
+  void *si_addr;             /* Address that caused fault */
+  int si_status;             /* Exit value or signal */
+#endif
   union sigval si_value;    /* Signal value */
 } siginfo_t;
 #endif /* defined(_POSIX_REALTIME_SIGNALS) || __POSIX_VISIBLE >= 199309 */
 
-#if defined(__rtems__)
+#if defined(__rtems__) || defined(__nanvix__)
 
 /*  3.3.8 Synchronously Accept a Signal, P1003.1b-1993, p. 76 */
 
@@ -83,6 +92,9 @@ typedef struct {
 #if __BSD_VISIBLE || __XSI_VISIBLE >= 4 || __POSIX_VISIBLE >= 200809
 #define SA_ONSTACK   0x4   /* Signal delivery will be on a separate stack. */
 #endif
+#define SA_NODEFER   0x40000000		/* Don't automatically block the signal */
+                                  /*    on entry to signal handler. */
+#define SA_RESETHAND 0x80000000		/* Reset to SIG_DFL on entry to signal handler */
 
 /* struct sigaction notes from POSIX:
  *
