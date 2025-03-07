@@ -14,7 +14,7 @@ typedef __sa_family_t sa_family_t;
 #endif
 
 /* Size of the sun_path field in sockaddr_un structure. */
-#define SUNPATHLEN 104
+#define SUNPATHLEN 14
 
 /* Unix socket domain. */
 struct sockaddr_un

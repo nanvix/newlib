@@ -12,11 +12,8 @@
 typedef __sa_family_t sa_family_t;
 #define _SA_FAMILY_T_DECLARED
 #endif
-/*
- * RFC 2553: protocol-independent placeholder for socket addresses.
- */
-#define _SS_MAXSIZE 128U
-#define _SS_ALIGNSIZE (sizeof(__int64_t))
+
+#define _SS_MAXSIZE 16U
 #define _SS_PADSIZE (_SS_MAXSIZE - sizeof(unsigned char) - sizeof(sa_family_t))
 
 struct sockaddr_storage
@@ -26,4 +23,4 @@ struct sockaddr_storage
     char __ss_pad1[_SS_PADSIZE];
 };
 
-#endif /* !_SYS__SOCKADDR_STORAGE_H_ */
+#endif
