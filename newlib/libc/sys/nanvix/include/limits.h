@@ -26,4 +26,11 @@
 #define SSIZE_MAX _POSIX_SSIZE_MAX
 #endif
 
+// The number of data keys per process.
+#define _POSIX_THREAD_KEYS_MAX 128
+
+// Maximum number of data keys that can be created by a process.
+#define PTHREAD_KEYS_MAX _POSIX_THREAD_KEYS_MAX
+
+
 #endif
