@@ -142,6 +142,10 @@ int	mkfifo (const char *__path, mode_t __mode );
 int	stat (const char *__restrict __path, struct stat *__restrict __sbuf );
 mode_t	umask (mode_t __mask );
 
+#if defined(__nanvix__)
+int lchmod(const char *__path,	mode_t __mode);
+#endif
+
 #if defined (__SPU__) || defined(__rtems__) || defined(__CYGWIN__) || defined(__nanvix__)
 int	lstat (const char *__restrict __path, struct stat *__restrict __buf );
 int	mknod (const char *__path, mode_t __mode, dev_t __dev );
