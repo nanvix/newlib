@@ -402,6 +402,7 @@ extern "C" {
 #endif
 
 #ifdef __nanvix__
+#define _POSIX_MONOTONIC_CLOCK		200112L
 #define _POSIX_REALTIME_SIGNALS		1
 
 /* In P1003.1b but defined by drafts at least as early as P1003.1c/D10  */
