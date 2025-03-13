@@ -133,6 +133,14 @@ int		getdate_r (const char *, struct tm *);
 #if __SVID_VISIBLE || __XSI_VISIBLE
 extern __IMPORT long _timezone;
 extern __IMPORT int _daylight;
+#if defined(__nanvix__)
+#ifndef timezone
+#define timezone _timezone
+#endif
+#ifndef daylight
+#define daylight _daylight
+#endif
+#endif
 #endif
 #if __POSIX_VISIBLE
 extern __IMPORT char *_tzname[2];
