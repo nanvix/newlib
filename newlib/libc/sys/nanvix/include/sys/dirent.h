@@ -37,7 +37,7 @@ typedef struct _dirdesc
 
 struct dirent
 {
-    ino_t d_fileno;            /* File serial number. */
+    ino_t d_ino;               /* File serial number. */
     char d_name[NAME_MAX + 1]; /*Filename string of entry. */
 };
 
