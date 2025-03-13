@@ -548,7 +548,7 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_MMIXWARE_DIR_TRUE@	libc/sys/mmixware/sbrk.c libc/sys/mmixware/stat.c libc/sys/mmixware/time.c libc/sys/mmixware/unlink.c libc/sys/mmixware/utime.c libc/sys/mmixware/wait.c libc/sys/mmixware/write.c \
 @HAVE_LIBC_SYS_MMIXWARE_DIR_TRUE@	libc/sys/mmixware/times.c libc/sys/mmixware/gettime.c libc/sys/mmixware/setjmp.S
 
-@HAVE_LIBC_SYS_NANVIX_DIR_TRUE@am__append_52 = libc/sys/nanvix/crt0.S
+@HAVE_LIBC_SYS_NANVIX_DIR_TRUE@am__append_52 = libc/sys/nanvix/crt0.S libc/sys/nanvix/dummy.c
 @HAVE_LIBC_SYS_NETWARE_DIR_TRUE@am__append_53 = \
 @HAVE_LIBC_SYS_NETWARE_DIR_TRUE@	libc/sys/netware/getpid.c \
 @HAVE_LIBC_SYS_NETWARE_DIR_TRUE@	libc/sys/netware/link.c
@@ -961,8 +961,11 @@ check_PROGRAMS =
 @HAVE_LIBM_MACHINE_XTENSA_TRUE@am__append_171 = $(libm_machine_xtensa_src)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/libc/acinclude.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/../config/depstand.m4 \
+	$(top_srcdir)/../config/lead-dot.m4 \
+	$(top_srcdir)/../config/multi.m4 \
+	$(top_srcdir)/../config/override.m4 $(top_srcdir)/iconv.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/libc/acinclude.m4 \
 	$(top_srcdir)/libc/machine/nds32/acinclude.m4 \
 	$(top_srcdir)/libc/machine/powerpc/acinclude.m4 \
 	$(top_srcdir)/libc/machine/sh/acinclude.m4 \
@@ -1661,7 +1664,8 @@ am__objects_51 = libc/ssp/a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_MMIXWARE_DIR_TRUE@	libc/sys/mmixware/a-times.$(OBJEXT) \
 @HAVE_LIBC_SYS_MMIXWARE_DIR_TRUE@	libc/sys/mmixware/a-gettime.$(OBJEXT) \
 @HAVE_LIBC_SYS_MMIXWARE_DIR_TRUE@	libc/sys/mmixware/a-setjmp.$(OBJEXT)
-@HAVE_LIBC_SYS_NANVIX_DIR_TRUE@am__objects_63 = libc/sys/nanvix/a-crt0.$(OBJEXT)
+@HAVE_LIBC_SYS_NANVIX_DIR_TRUE@am__objects_63 = libc/sys/nanvix/a-crt0.$(OBJEXT) \
+@HAVE_LIBC_SYS_NANVIX_DIR_TRUE@	libc/sys/nanvix/a-dummy.$(OBJEXT)
 @HAVE_LIBC_SYS_NETWARE_DIR_TRUE@am__objects_64 = libc/sys/netware/a-getpid.$(OBJEXT) \
 @HAVE_LIBC_SYS_NETWARE_DIR_TRUE@	libc/sys/netware/a-link.$(OBJEXT)
 @HAVE_LIBC_SYS_OR1K_DIR_TRUE@am__objects_65 = libc/sys/or1k/a-getreent.$(OBJEXT) \
@@ -4829,6 +4833,7 @@ am__depfiles_remade = libc/argz/$(DEPDIR)/a-argz_add.Po \
 	libc/sys/mmixware/$(DEPDIR)/a-wait.Po \
 	libc/sys/mmixware/$(DEPDIR)/a-write.Po \
 	libc/sys/nanvix/$(DEPDIR)/a-crt0.Po \
+	libc/sys/nanvix/$(DEPDIR)/a-dummy.Po \
 	libc/sys/netware/$(DEPDIR)/a-getpid.Po \
 	libc/sys/netware/$(DEPDIR)/a-link.Po \
 	libc/sys/or1k/$(DEPDIR)/a-getreent.Po \
@@ -6273,6 +6278,7 @@ lpfx = @lpfx@
 machine_dir = @machine_dir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
+multi_basedir = @multi_basedir@
 newlib_basedir = @newlib_basedir@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
@@ -9689,6 +9695,8 @@ libc/sys/nanvix/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) libc/sys/nanvix/$(DEPDIR)
 	@: > libc/sys/nanvix/$(DEPDIR)/$(am__dirstamp)
 libc/sys/nanvix/a-crt0.$(OBJEXT): libc/sys/nanvix/$(am__dirstamp) \
+	libc/sys/nanvix/$(DEPDIR)/$(am__dirstamp)
+libc/sys/nanvix/a-dummy.$(OBJEXT): libc/sys/nanvix/$(am__dirstamp) \
 	libc/sys/nanvix/$(DEPDIR)/$(am__dirstamp)
 libc/sys/netware/$(am__dirstamp):
 	@$(MKDIR_P) libc/sys/netware
@@ -15909,6 +15917,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/mmixware/$(DEPDIR)/a-wait.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/mmixware/$(DEPDIR)/a-write.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/nanvix/$(DEPDIR)/a-crt0.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/nanvix/$(DEPDIR)/a-dummy.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/netware/$(DEPDIR)/a-getpid.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/netware/$(DEPDIR)/a-link.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/or1k/$(DEPDIR)/a-getreent.Po@am__quote@ # am--include-marker
@@ -33571,6 +33580,20 @@ libc/sys/mmixware/a-gettime.obj: libc/sys/mmixware/gettime.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/mmixware/gettime.c' object='libc/sys/mmixware/a-gettime.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/mmixware/a-gettime.obj `if test -f 'libc/sys/mmixware/gettime.c'; then $(CYGPATH_W) 'libc/sys/mmixware/gettime.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/mmixware/gettime.c'; fi`
+
+libc/sys/nanvix/a-dummy.o: libc/sys/nanvix/dummy.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/nanvix/a-dummy.o -MD -MP -MF libc/sys/nanvix/$(DEPDIR)/a-dummy.Tpo -c -o libc/sys/nanvix/a-dummy.o `test -f 'libc/sys/nanvix/dummy.c' || echo '$(srcdir)/'`libc/sys/nanvix/dummy.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/nanvix/$(DEPDIR)/a-dummy.Tpo libc/sys/nanvix/$(DEPDIR)/a-dummy.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/nanvix/dummy.c' object='libc/sys/nanvix/a-dummy.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/nanvix/a-dummy.o `test -f 'libc/sys/nanvix/dummy.c' || echo '$(srcdir)/'`libc/sys/nanvix/dummy.c
+
+libc/sys/nanvix/a-dummy.obj: libc/sys/nanvix/dummy.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/nanvix/a-dummy.obj -MD -MP -MF libc/sys/nanvix/$(DEPDIR)/a-dummy.Tpo -c -o libc/sys/nanvix/a-dummy.obj `if test -f 'libc/sys/nanvix/dummy.c'; then $(CYGPATH_W) 'libc/sys/nanvix/dummy.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/nanvix/dummy.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/nanvix/$(DEPDIR)/a-dummy.Tpo libc/sys/nanvix/$(DEPDIR)/a-dummy.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/nanvix/dummy.c' object='libc/sys/nanvix/a-dummy.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/nanvix/a-dummy.obj `if test -f 'libc/sys/nanvix/dummy.c'; then $(CYGPATH_W) 'libc/sys/nanvix/dummy.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/nanvix/dummy.c'; fi`
 
 libc/sys/netware/a-getpid.o: libc/sys/netware/getpid.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/netware/a-getpid.o -MD -MP -MF libc/sys/netware/$(DEPDIR)/a-getpid.Tpo -c -o libc/sys/netware/a-getpid.o `test -f 'libc/sys/netware/getpid.c' || echo '$(srcdir)/'`libc/sys/netware/getpid.c
@@ -53664,6 +53687,7 @@ distclean: distclean-am
 	-rm -f libc/sys/mmixware/$(DEPDIR)/a-wait.Po
 	-rm -f libc/sys/mmixware/$(DEPDIR)/a-write.Po
 	-rm -f libc/sys/nanvix/$(DEPDIR)/a-crt0.Po
+	-rm -f libc/sys/nanvix/$(DEPDIR)/a-dummy.Po
 	-rm -f libc/sys/netware/$(DEPDIR)/a-getpid.Po
 	-rm -f libc/sys/netware/$(DEPDIR)/a-link.Po
 	-rm -f libc/sys/or1k/$(DEPDIR)/a-getreent.Po
@@ -56348,6 +56372,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f libc/sys/mmixware/$(DEPDIR)/a-wait.Po
 	-rm -f libc/sys/mmixware/$(DEPDIR)/a-write.Po
 	-rm -f libc/sys/nanvix/$(DEPDIR)/a-crt0.Po
+	-rm -f libc/sys/nanvix/$(DEPDIR)/a-dummy.Po
 	-rm -f libc/sys/netware/$(DEPDIR)/a-getpid.Po
 	-rm -f libc/sys/netware/$(DEPDIR)/a-link.Po
 	-rm -f libc/sys/or1k/$(DEPDIR)/a-getreent.Po
