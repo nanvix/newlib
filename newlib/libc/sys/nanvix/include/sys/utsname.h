@@ -8,7 +8,8 @@
 
 #include <sys/cdefs.h>
 
-#define _UTSNAME_LENGTH 65
+// Length of fields in the `utsname` structure, including the terminating null byte.
+#define _UTSNAME_LENGTH 64
 
 struct utsname
 {
