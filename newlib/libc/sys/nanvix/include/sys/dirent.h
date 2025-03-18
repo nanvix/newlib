@@ -44,9 +44,10 @@ struct dirent
 struct posix_dent
 {
     ino_t d_ino;               /* File serial number. */
-    reclen_t d_reclen;         /* Length of this entry, including trailing padding if necessary. See posix_getdents().*/
+    reclen_t d_reclen;         /* Length of this entry, including trailing padding if necessary. */
     unsigned char d_type;      /* File type or unknown-file-type indication. */
     char d_name[NAME_MAX + 1]; /* Filename string of entry. */
+    char d_pad[1];             /* Padding bytes for alignment. */
 };
 
 /*
