@@ -36,7 +36,17 @@
 
 #ifdef __nanvix__
 
-#define	NAME_MAX            15	/* Maximum number of bytes in a filename (not including the terminating null byte). */
+/*
+ * Maximum number of bytes in a filename (not including the terminating null byte).
+ */
+#define NAME_MAX 15
+
+/*
+ * Maximum number of bytes the implementation stores as a pathname in a user-supplied buffer of
+ * unspecified size, including the terminating null character. Minimum number the implementation
+ * shall accept as the maximum number of bytes in a pathname.
+ */
+#define PATH_MAX 256
 
 #else
 
