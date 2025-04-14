@@ -3,5 +3,10 @@
  * Licensed under the MIT License.
  */
 
-// Make ISO compilers happy.
-void __nanvix_dummy_sys(void) {}
+void __attribute__((weak)) _start(char *argptr, char *envptr)
+{
+    (void)argptr;
+    (void)envptr;
+
+    /* Do nothing. */
+}
