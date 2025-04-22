@@ -159,7 +159,7 @@ extern "C" {
 
 #if __BSD_VISIBLE || __POSIX_VISIBLE >= 200809
 /* Special descriptor value to denote the cwd in calls to openat(2) etc. */
-#define AT_FDCWD -2
+#define AT_FDCWD -100
 
 /* Flag values for faccessat2) et al. */
 #define AT_EACCESS                 0x0001
