@@ -53,6 +53,11 @@
  */
 #define _POSIX_NAME_MAX 14
 
+/*
+ * Maximum number of bytes in a filename (not including the terminating null byte).
+ */
+#define _XOPEN_NAME_MAX 255
+
 #else
 
 #define	ARG_MAX			65536	/* max bytes for an exec function */
