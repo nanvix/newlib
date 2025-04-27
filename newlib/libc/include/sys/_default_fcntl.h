@@ -236,6 +236,7 @@ extern int futimesat (int, const char *, const struct timeval [2]);
 
 #if _POSIX_C_SOURCE >= 200112L
 extern int posix_fadvise(int, off_t, off_t, int);
+extern int posix_fallocate(int fd, off_t offset, off_t len);
 #endif
 
 /* Provide _<systemcall> prototypes for functions provided by some versions
