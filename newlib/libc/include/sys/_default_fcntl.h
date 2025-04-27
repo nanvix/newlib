@@ -119,6 +119,15 @@ extern "C" {
 
 #endif	/* __MISC_VISIBLE */
 
+#if _POSIX_C_SOURCE >= 200112L
+#define POSIX_FADV_NORMAL 0
+#define POSIX_FADV_SEQUENTIAL 1
+#define POSIX_FADV_RANDOM 2
+#define POSIX_FADV_WILLNEED 3
+#define POSIX_FADV_DONTNEED 4
+#define POSIX_FADV_NOREUSE 5
+#endif
+
 #if __BSD_VISIBLE
 #define	FNONBLOCK	_FNONBLOCK
 #endif	/* __BSD_VISIBLE */
@@ -223,6 +232,10 @@ extern int flock (int, int);
 #if __GNU_VISIBLE
 #include <sys/time.h>
 extern int futimesat (int, const char *, const struct timeval [2]);
+#endif
+
+#if _POSIX_C_SOURCE >= 200112L
+extern int posix_fadvise(int, off_t, off_t, int);
 #endif
 
 /* Provide _<systemcall> prototypes for functions provided by some versions
