@@ -23,6 +23,10 @@ typedef __off_t off_t;
 __BEGIN_DECLS
 extern ssize_t readv(int, const struct iovec *, int);
 extern ssize_t writev(int, const struct iovec *, int);
+#if __BSD_VISIBLE
+extern ssize_t preadv(int, const struct iovec *, int, off_t);
+extern ssize_t pwritev(int, const struct iovec *, int, off_t);
+#endif
 __END_DECLS
 
 #endif
