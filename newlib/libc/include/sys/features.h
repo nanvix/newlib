@@ -409,6 +409,10 @@ extern "C" {
 /* In P1003.1b but defined by drafts at least as early as P1003.1c/D10  */
 #define _POSIX_THREADS				1
 
+/* P1003.4b/D8 defines the constants below this comment. */
+#define _POSIX_CPUTIME    1
+#define _POSIX_THREAD_CPUTIME			1
+
 /* UNIX98 added some new pthread mutex attributes */
 #define _UNIX98_THREAD_MUTEX_ATTRIBUTES         1
 
