@@ -37,26 +37,52 @@
 #ifdef __nanvix__
 
 /*
- * Maximum number of bytes in a filename (not including the terminating null byte).
+ * Maximum length of a host name (not including the terminating null) as returned from the
+ * gethostname() function.
  */
-#define NAME_MAX 15
+#define HOST_NAME_MAX _POSIX_HOST_NAME_MAX
+
+/*
+ * Maximum length of a host name (not including the terminating null) as returned from the
+ * gethostname() function.
+ */
+#define _POSIX_HOST_NAME_MAX 255
+
+/*
+ * Maximum number of bytes in a filename (not including the terminating null of a filename string).
+ */
+#define NAME_MAX _XOPEN_NAME_MAX
+
+/*
+ * Maximum number of bytes in a filename (not including the terminating null of a filename string).
+ */
+#define _POSIX_NAME_MAX 14
+
+/*
+ * Maximum number of bytes in a filename (not including the terminating null of a filename string).
+ */
+#define _XOPEN_NAME_MAX 255
 
 /*
  * Maximum number of bytes the implementation stores as a pathname in a user-supplied buffer of
  * unspecified size, including the terminating null character. Minimum number the implementation
  * shall accept as the maximum number of bytes in a pathname.
  */
-#define PATH_MAX 256
+#define PATH_MAX _XOPEN_PATH_MAX
 
 /*
- * Maximum number of bytes in a filename (not including the terminating null byte).
+ * Maximum number of bytes the implementation stores as a pathname in a user-supplied buffer of
+ * unspecified size, including the terminating null character. Minimum number the implementation
+ * shall accept as the maximum number of bytes in a pathname.
  */
-#define _POSIX_NAME_MAX 14
+#define _POSIX_PATH_MAX 256
 
 /*
- * Maximum number of bytes in a filename (not including the terminating null byte).
+ * Maximum number of bytes the implementation stores as a pathname in a user-supplied buffer of
+ * unspecified size, including the terminating null character. Minimum number the implementation
+ * shall accept as the maximum number of bytes in a pathname.
  */
-#define _XOPEN_NAME_MAX 255
+#define _XOPEN_PATH_MAX 1024
 
 #else
 
