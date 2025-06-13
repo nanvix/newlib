@@ -79,6 +79,17 @@ struct addrinfo
 /* Highest reserved Internet port number. */
 #define IPPORT_RESERVED 1024
 
+#if __BSD_VISIBLE
+/* Error return codes from gethostbyname() and gethostbyaddr() (left in h_errno). */
+#define NETDB_INTERNAL -1  /* see errno */
+#define NETDB_SUCCESS 0    /* no problem */
+#define HOST_NOT_FOUND 1   /* Authoritative Answer Host not found */
+#define TRY_AGAIN 2        /* Non-Authoritative Host not found, or SERVERFAIL */
+#define NO_RECOVERY 3      /* Non recoverable errors, FORMERR, REFUSED, NOTIMP */
+#define NO_DATA 4          /* Valid name, no data record of requested type */
+#define NO_ADDRESS NO_DATA /* no address, look for MX record */
+#endif
+
 /* Used in the ai_flags field of addrinfo structure. */
 #define AI_PASSIVE 0x00000001     /* Socket address is intended for bind(). */
 #define AI_CANONNAME 0x00000002   /* Request for canonical name. */
@@ -100,6 +111,8 @@ struct addrinfo
 #define NI_DGRAM 0x00000010       /* Indicates that the service is a datagram service (SOCK_DGRAM). */
 #define NI_NUMERICSCOPE                                                                                                \
     0x00000020 /* For IPv6 addresses, the numeric form of the scope identifier is returned instead of its name. */
+#define NI_MAXHOST 1025 /* Maximum length of a node name, including the terminating null byte. */
+#define NI_MAXSERV 32   /* Maximum length of a service name, including the terminating null byte. */
 
 /* Error values for getaddrinfo() and getnameinfo() */
 #define EAI_AGAIN 2    /* The name could not be resolved at this time. Future attempts may succeed. */
@@ -121,6 +134,11 @@ extern void endhostent(void);
 extern void endnetent(void);
 extern void endprotoent(void);
 extern void endservent(void);
+#if __BSD_VISIBLE
+extern struct hostent *gethostbyaddr(const void *, socklen_t, int);
+extern struct hostent *gethostbyname(const char *);
+extern int *__h_errno(void);
+#endif
 extern void freeaddrinfo(struct addrinfo *);
 extern const char *gai_strerror(int);
 extern int getaddrinfo(const char *restrict, const char *restrict, const struct addrinfo *restrict,
