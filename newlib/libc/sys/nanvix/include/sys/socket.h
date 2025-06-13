@@ -65,6 +65,15 @@ struct cmsghdr
 #define CMSG_DATA(cmsg) ((unsigned char *)(cmsg) + _ALIGN(sizeof(struct cmsghdr)))
 
 /*
+ * If the argument is a pointer to a msghdr structure, this macro shall return a pointer to the first cmsghdr structure
+ * in the ancillary data associated with this msghdr structure, or a null pointer if either there is no ancillary data
+ * associated with the msghdr structure (msg_controllen is zero) or there is insufficient room in the ancillary data for
+ * a complete cmsghdr structure (msg_controllen is non-zero but less than sizeof(struct cmsghdr)).
+ */
+#define CMSG_FIRSTHDR(mhdr)                                                                                            \
+    ((mhdr)->msg_controllen >= sizeof(struct cmsghdr) ? (struct cmsghdr *)(mhdr)->msg_control : (struct cmsghdr *)0)
+
+/*
  * If the first argument is a pointer to a msghdr structure and the second argument is a pointer to a cmsghdr structure
  * in the ancillary data pointed to by the msg_control field of that msghdr structure, this macro shall return a pointer
  * to the next cmsghdr structure, or a null pointer if the second argument points to the last cmsghdr and data array
@@ -79,15 +88,6 @@ struct cmsghdr
         (char *)(mhdr)->msg_control + (mhdr)->msg_controllen)                                                          \
          ? (struct cmsghdr *)0                                                                                         \
          : (struct cmsghdr *)(void *)((char *)(cmsg) + _ALIGN(((struct cmsghdr *)(cmsg))->cmsg_len)))
-
-/*
- * If the argument is a pointer to a msghdr structure, this macro shall return a pointer to the first cmsghdr structure
- * in the ancillary data associated with this msghdr structure, or a null pointer if either there is no ancillary data
- * associated with the msghdr structure (msg_controllen is zero) or there is insufficient room in the ancillary data for
- * a complete cmsghdr structure (msg_controllen is non-zero but less than sizeof(struct cmsghdr)).
- */
-#define CMSG_FIRSTHDR(mhdr)                                                                                            \
-    ((mhdr)->msg_controllen >= sizeof(struct cmsghdr) ? (struct cmsghdr *)(mhdr)->msg_control : (struct cmsghdr *)0)
 
 /*
  * If the argument has a type such that its value can be assigned to an object of type socklen_t, this macro shall
