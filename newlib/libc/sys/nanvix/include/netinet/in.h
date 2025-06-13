@@ -51,6 +51,14 @@ struct sockaddr_in
 /* Used as destination address in the structure passed to connect(), sendmsg(), and sendto(). */
 #define INADDR_BROADCAST ((in_addr_t)0xffffffff) /* IPv4 broadcast address. */
 
+/*
+ * Used as a local address in the structure passed to bind() when the socket is
+ * bound to the loopback interface.
+ */
+#if __BSD_VISIBLE
+#define INADDR_LOOPBACK ((in_addr_t)0x7f000001) /* IPv4 loopback address. */
+#endif /* __BSD_VISIBLE */
+
 /* INET_ADDRSTRLEN visible from <arpa/inet.h> */
 
 /* htonl() visible from <arpa/inet.h> */
