@@ -6,6 +6,7 @@
 #ifndef _SYS_SOCKET_H_
 #define _SYS_SOCKET_H_
 
+#include <machine/align.h>
 #include <sys/_types.h>
 #include <sys/cdefs.h>
 
