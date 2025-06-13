@@ -78,7 +78,7 @@ struct cmsghdr
      : ((char *)(cmsg) + _ALIGN(((struct cmsghdr *)(cmsg))->cmsg_len) + _ALIGN(sizeof(struct cmsghdr)) >               \
         (char *)(mhdr)->msg_control + (mhdr)->msg_controllen)                                                          \
          ? (struct cmsghdr *)0                                                                                         \
-         : (struct cmsghdr *)(void *)((char *)(cmsg) + _ALIGN(((struct cmshdr *)(cmsg))->cmsg_len)))
+         : (struct cmsghdr *)(void *)((char *)(cmsg) + _ALIGN(((struct cmsghdr *)(cmsg))->cmsg_len)))
 
 /*
  * If the argument is a pointer to a msghdr structure, this macro shall return a pointer to the first cmsghdr structure
