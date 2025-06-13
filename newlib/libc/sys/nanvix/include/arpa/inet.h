@@ -59,7 +59,7 @@ extern uint16_t ntohs(uint16_t);
 
 extern in_addr_t inet_addr(const char *);
 extern const char *inet_ntoa(struct in_addr);
-extern const char inet_ntop(int, const void *__restrict, char *__restrict, socklen_t);
+extern const char *inet_ntop(int, const void *, char *, socklen_t);
 extern int inet_pton(int, const char *__restrict, void *__restrict);
 __END_DECLS
 
