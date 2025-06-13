@@ -187,6 +187,13 @@ struct linger
 #define AF_UNIX 1   /* UNIX domain sockets. */
 #define AF_INET 2   /* Internet domain sockets for use with IPv4 addresses. */
 
+#if __BSD_VISIBLE
+/* Protocol families, same as address families for now. */
+#define PF_UNSPEC AF_UNSPEC
+#define PF_UNIX PF_LOCAL
+#define PF_INET AF_INET
+#endif
+
 /* Used as howto arguments in shutdown(). */
 #define SHUT_RD 0   /* Disables further receive operations. */
 #define SHUT_WR 1   /* Disables further send and receive operations. */
