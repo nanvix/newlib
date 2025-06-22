@@ -156,6 +156,7 @@ extern "C" {
 #endif	/* __MISC_VISIBLE */
 #if __POSIX_VISIBLE >= 200809
 #define	F_DUPFD_CLOEXEC	14	/* As F_DUPFD, but set close-on-exec flag */
+#define	F_DUPFD_CLOFORK	15	/* As F_DUPFD, but set close-on-fork flag */
 #endif
 
 /* fcntl(2) flags (l_type field of flock structure) */
