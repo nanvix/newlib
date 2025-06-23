@@ -32,6 +32,9 @@ extern "C" {
 #define	_FNOFOLLOW	0x100000
 #define	_FDIRECTORY	0x200000
 #define	_FEXECSRCH	0x400000
+#if defined(__nanvix__)
+#define	_FCLOFORK	0x800000
+#endif
 #if defined (__CYGWIN__)
 #define	_FTMPFILE	0x800000
 #define	_FNOATIME	0x1000000
@@ -65,6 +68,9 @@ extern "C" {
 #define	O_DIRECTORY	_FDIRECTORY
 #define	O_EXEC		_FEXECSRCH
 #define	O_SEARCH	_FEXECSRCH
+#if defined(__nanvix__)
+#define O_CLOFORK	_FCLOFORK
+#endif
 #endif
 
 #if __BSD_VISIBLE
