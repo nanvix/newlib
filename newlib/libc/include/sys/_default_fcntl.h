@@ -134,6 +134,9 @@ extern "C" {
 
 /* XXX close on exec request; must match UF_EXCLOSE in user.h */
 #define	FD_CLOEXEC	1	/* posix */
+#if defined(__nanvix__)
+#define FD_CLOFORK	2
+#endif
 
 /* fcntl(2) requests */
 #define	F_DUPFD		0	/* Duplicate fildes */
