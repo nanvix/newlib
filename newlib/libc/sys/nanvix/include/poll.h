@@ -27,16 +27,16 @@ typedef unsigned int nfds_t;
 /* timespec structure visible from <time.h> */
 
 /* Bitwise flags for use in events or revents in the pollfd structure. */
-#define POLLIN 1           /* Data other than high-priority data may be read without blocking. */
-#define POLLPRI 2          /* High priority data may be read without blocking. */
-#define POLLOUT 4          /* Normal data may be written without blocking. */
-#define POLLERR 8          /* An error has occurred (revents only). */
-#define POLLHUP 16         /* Device has been disconnected (revents only). */
-#define POLLNVAL 32        /* Invalid fd member (revents only). */
-#define POLLRDNORM POLLIN  /* Normal data may be read without blocking. */
-#define POLLRDBAND POLLPRI /* Priority data may be read without blocking. */
+#define POLLIN 0x0001      /* Data other than high-priority data may be read without blocking. */
+#define POLLPRI 0x0002     /* High priority data may be read without blocking. */
+#define POLLOUT 0x0004     /* Normal data may be written without blocking. */
+#define POLLERR 0x0008     /* An error has occurred (revents only). */
+#define POLLHUP 0x0010     /* Device has been disconnected (revents only). */
+#define POLLNVAL 0x0020    /* Invalid fd member (revents only). */
+#define POLLRDNORM 0x0040  /* Normal data may be read without blocking. */
+#define POLLRDBAND 0x0080  /* Priority data may be read without blocking. */
 #define POLLWRNORM POLLOUT /* Equivalent to POLLOUT. */
-#define POLLWRBAND POLLOUT /* Priority data may be written. */
+#define POLLWRBAND 0x0100  /* Priority data may be written. */
 
 __BEGIN_DECLS
 extern int poll(struct pollfd[], nfds_t, int);
