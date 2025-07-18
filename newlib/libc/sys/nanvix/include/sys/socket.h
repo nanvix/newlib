@@ -186,6 +186,7 @@ struct linger
 #define AF_UNSPEC 0 /* Unspecified. */
 #define AF_UNIX 1   /* UNIX domain sockets. */
 #define AF_INET 2   /* Internet domain sockets for use with IPv4 addresses. */
+#define AF_INET6 3  /* IPv6 */
 
 #if __BSD_VISIBLE
 /* Protocol families, same as address families for now. */
