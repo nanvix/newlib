@@ -23,6 +23,9 @@ typedef struct Dl_info Dl_info_t;
 #define RTLD_NOW 2    /* All symbols are available for relocation processing of other modules.          */
 #define RTLD_GLOBAL 4 /* All symbols are not made available for relocation processing by other modules. */
 
+/* Non-standard GLIBC extension */
+#define RTLD_DEFAULT RTLD_LOCAL
+
 __BEGIN_DECLS
 extern int dladdr(const void *__restrict, Dl_info_t *__restrict);
 extern int dlclose(void *);
