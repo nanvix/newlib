@@ -141,10 +141,10 @@ extern int *__h_errno(void);
 #endif
 extern void freeaddrinfo(struct addrinfo *);
 extern const char *gai_strerror(int);
-extern int getaddrinfo(const char *restrict, const char *restrict, const struct addrinfo *restrict,
-                       struct addrinfo **restrict);
+extern int getaddrinfo(const char *__restrict, const char *__restrict, const struct addrinfo *__restrict,
+                       struct addrinfo **__restrict);
 extern struct hostent *gethostent(void);
-extern int getnameinfo(const struct sockaddr *restrict, socklen_t, char *restrict, socklen_t, char *restrict, socklen_t,
+extern int getnameinfo(const struct sockaddr *__restrict, socklen_t, char *__restrict, socklen_t, char *__restrict, socklen_t,
                        int);
 extern struct netent *getnetbyaddr(uint32_t, int);
 extern struct netent *getnetbyname(const char *);

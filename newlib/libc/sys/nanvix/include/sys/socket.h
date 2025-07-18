@@ -200,16 +200,16 @@ struct linger
 #define SHUT_RDWR 2 /* Disables further send operations. */
 
 __BEGIN_DECLS
-extern int accept(int, struct sockaddr *restrict, socklen_t *restrict);
-extern int accept4(int, struct sockaddr *restrict, socklen_t *restrict, int);
+extern int accept(int, struct sockaddr *__restrict, socklen_t *__restrict);
+extern int accept4(int, struct sockaddr *__restrict, socklen_t *__restrict, int);
 extern int bind(int, const struct sockaddr *, socklen_t);
 extern int connect(int, const struct sockaddr *, socklen_t);
-extern int getpeername(int, struct sockaddr *restrict, socklen_t *restrict);
-extern int getsockname(int, struct sockaddr *restrict, socklen_t *restrict);
-extern int getsockopt(int, int, int, void *restrict, socklen_t *restrict);
+extern int getpeername(int, struct sockaddr *__restrict, socklen_t *__restrict);
+extern int getsockname(int, struct sockaddr *__restrict, socklen_t *__restrict);
+extern int getsockopt(int, int, int, void *__restrict, socklen_t *__restrict);
 extern int listen(int, int);
 extern ssize_t recv(int, void *, size_t, int);
-extern ssize_t recvfrom(int, void *restrict, size_t, int, struct sockaddr *restrict, socklen_t *restrict);
+extern ssize_t recvfrom(int, void *__restrict, size_t, int, struct sockaddr *__restrict, socklen_t *__restrict);
 extern ssize_t recvmsg(int, struct msghdr *, int);
 extern ssize_t send(int, const void *, size_t, int);
 extern ssize_t sendmsg(int, const struct msghdr *, int);

@@ -24,11 +24,11 @@ typedef struct Dl_info Dl_info_t;
 #define RTLD_GLOBAL 4 /* All symbols are not made available for relocation processing by other modules. */
 
 __BEGIN_DECLS
-extern int dladdr(const void *restrict, Dl_info_t *restrict);
+extern int dladdr(const void *__restrict, Dl_info_t *__restrict);
 extern int dlclose(void *);
 extern char *dlerror(void);
 extern void *dlopen(const char *, int);
-extern void *dlsym(void *restrict, const char *restrict);
+extern void *dlsym(void *__restrict, const char *__restrict);
 __END_DECLS
 
 #endif /* _DLFCN_H */

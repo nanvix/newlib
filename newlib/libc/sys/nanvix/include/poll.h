@@ -40,7 +40,7 @@ typedef unsigned int nfds_t;
 
 __BEGIN_DECLS
 extern int poll(struct pollfd[], nfds_t, int);
-extern int ppoll(struct pollfd[], nfds_t, const struct timespec *restrict, const sigset_t *restrict);
+extern int ppoll(struct pollfd[], nfds_t, const struct timespec *__restrict, const sigset_t *__restrict);
 __END_DECLS
 
 #endif
