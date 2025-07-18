@@ -35,14 +35,13 @@ typedef __id_t id_t;
 #endif
 
 /* Used as arguments for getrlimit() and setrlimit() */
-#define RLIMIT_CORE 0 /* Limit on size of core image. */
 #ifndef __XSI_VISIBLE
 #define RLIMIT_CPU 1 /* Limit on CPU time per process. */
 #endif
 #define RLIMIT_FSIZE 2  /* Limit on file size. */
 #define RLIMIT_DATA 3   /* Limit on data segment size. */
 #define RLIMIT_STACK 4  /* Limit on stack size. */
-#define RLIMIT_CORE 5   /* max core file size */
+#define RLIMIT_CORE 5   /* Limit on size of core image. */
 #define RLIMIT_NOFILE 6 /* Limit on number of open files. */
 #define RLIMIT_AS 7     /* Limit on address space size. */
 
