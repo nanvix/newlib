@@ -1,0 +1,211 @@
+#!/bin/bash
+
+#
+# Utility for building development tools for Nanvix.
+#
+# Run './z help' for more information on how to use this utility.
+#
+# Relevant Environment Variables
+#
+#   - Z_TARGET: Target architecture.
+#   - Z_STAGE: Build stage.
+#   - Z_Z_INSTALL_LOCATION: Installation directory.
+#   - Z_Z_SYSROOT_LOCATION: Sysroot directory.
+#   - Z_RELEASE_NAME: Release name.
+#
+# shellcheck disable=SC2329
+# shellcheck disable=SC2317
+# shellcheck disable=SC2034
+
+#==================================================================================================
+
+# Fast fail on errors, unset variables, and pipe failures.
+set -euo pipefail
+
+#==================================================================================================
+# Import Utils Script
+#==================================================================================================
+
+UTILS_SCRIPT_VERSION="f8b25adabc6a88cc7c76a4439f5a3e857ba386a1"
+UTILS_SCRIPT_URL="https://raw.githubusercontent.com/nanvix/scripts/${UTILS_SCRIPT_VERSION}/utils.sh"
+
+utils_script="/tmp/utils-${UTILS_SCRIPT_VERSION}.sh"
+
+# Download only if the file doesn't exist or is empty
+if [[ ! -s "$utils_script" ]]; then
+
+    if command -v curl >/dev/null 2>&1; then
+        curl -fsSL "$UTILS_SCRIPT_URL" -o "$utils_script" || {
+            echo "Failed to download utils.sh"
+            rm -f "$utils_script"
+            exit 1
+        }
+    elif command -v wget >/dev/null 2>&1; then
+        wget -qO "$utils_script" "$UTILS_SCRIPT_URL" || {
+            echo "Failed to download utils.sh"
+            rm -f "$utils_script"
+            exit 1
+        }
+    else
+        echo "curl or wget required"
+        exit 1
+    fi
+fi
+
+# Source the downloaded script
+# shellcheck disable=SC1090
+source "${utils_script}"
+
+#==================================================================================================
+# Z Constants
+#==================================================================================================
+
+# Project Name
+readonly Z_PROJECT_NAME="NewLib"
+# Directory used when building, empty if not required.
+readonly Z_PROJECT_BUILD_DIR=""
+
+# Required Build Tools (tool_name => minimum_version)
+readonly -A Z_PROJECT_REQUIRED_TOOLS=(
+    ["gcc"]="13.3.0"
+    ["make"]="4.3.0"
+    ["wget"]="1.21.4"
+    ["bzip2"]="1.0.8"
+    ["tar"]="1.34.0"
+)
+
+# Required System Packages for Setup
+readonly Z_PROJECT_REQUIRED_PACKAGES=("build-essential" "wget" "bzip2" "tar")
+
+#==================================================================================================
+# Project-Specific Constants
+#==================================================================================================
+
+# Build Targets
+readonly BUILD_TARGETS=("all")
+
+# Install Targets
+readonly INSTALL_TARGETS=("install")
+
+# GCC.
+readonly GCC_VERSION="12.4.0"
+readonly GCC_SHORT_COMMIT_HASH="260bbd1b0c9"
+readonly GCC_URL="https://github.com/nanvix/gcc/releases/download/nanvix-v${GCC_VERSION}-${GCC_SHORT_COMMIT_HASH}/nanvix-gcc-${GCC_VERSION}-${GCC_SHORT_COMMIT_HASH}-stage0.tar.bz2"
+readonly GCC_SHA256_CHECKSUM="sha256:e03d5aff3f9dbff1399998b8602ae5f33b9ef8b7bf7bac01849ebd624a97bc10"
+
+#==================================================================================================
+# Project-Specific Functions
+#==================================================================================================
+
+#
+# Description
+#
+#   Executes project-specific steps for downloading dependencies.
+#
+# Return Value
+#
+#   - On success, this function returns zero.
+#   - On failure, this function returns non-zero.
+#
+download_steps() {
+    # Download and extract GCC if sysroot location is not set.
+    if [[ -z "${Z_SYSROOT_LOCATION}" ]]; then
+        local sysroot_location="${Z_INSTALL_LOCATION}"
+
+        local gcc_tar_bz2_file
+        gcc_tar_bz2_file=$(download "$GCC_URL" "$GCC_SHA256_CHECKSUM") || {
+            print_error "Failed to download GCC."
+            return 1
+        }
+        extract_tar_bz2 "$gcc_tar_bz2_file" "${sysroot_location}" || {
+            print_error "Failed to extract GCC."
+            return 1
+        }
+    fi
+
+    return 0
+}
+
+#
+# Description
+#
+#   Executes project-specific steps for configuring a build.
+#
+# Return Value
+#
+#   - On success, this function returns zero.
+#   - On failure, this function returns non-zero.
+#
+# Usage Example
+#
+#   configure_steps "i686-nanvix" "/usr/local"
+#
+configure_steps() {
+    ./configure \
+        --target="${Z_TARGET}" \
+        --prefix="${Z_INSTALL_LOCATION}" \
+        --disable-multilib || {
+        print_error "Configuration failed."
+        return 1
+    }
+
+    return 0
+}
+
+#
+# Description
+#
+#   Project-specific steps for building the project.
+#
+# Parameters
+#
+#   - $1: Number of parallel build jobs.
+#
+# Usage Example
+#
+#   build_steps 4 "all" "check"
+#
+build_steps() {
+    local parallel_build_option=$1
+
+    make -j "${parallel_build_option}" "${BUILD_TARGETS[@]}" || {
+        print_error "Build failed for targets: '${BUILD_TARGETS[*]}'."
+        return 1
+    }
+
+    return 0
+}
+
+#
+# Description
+#
+#   Project-specific steps for installing the project.
+#
+# Return Value
+#
+#   - On success, this function returns zero.
+#   - On failure, this function returns non-zero.
+#
+# Usage Example
+#
+#   install_steps "install" "/usr/local"
+#
+install_steps() {
+    make "${INSTALL_TARGETS[@]}" || {
+        print_error "Installation failed."
+        return 1
+    }
+
+    return 0
+}
+
+#==================================================================================================
+# Main Script
+#==================================================================================================
+
+# Run main function with all arguments
+zmain "$@" || {
+    exit 1
+}
+
+exit 0

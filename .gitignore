@@ -48,3 +48,5 @@ core
 lost+found
 
 i686-nanvix/
+.z.config
+nanvix-newlib.tar.bz2
