@@ -58,18 +58,18 @@ jobs:
       run: |
         SHORT_SHA=$(git rev-parse --short HEAD)
         TAG_NAME="nanvix-v${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
-        RELEASE_NAME="nanvix-gcc-${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
+        RELEASE_NAME="nanvix-newlib-${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
         NEWLIB_BRANCH="nanvix/v${{ env.NEWLIB_VERSION }}"
         echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
         echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
         echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
-        echo "gcc_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
+        echo "newlib_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
 
-    - name: Fast-forward ${{ steps.commit_info.outputs.gcc_branch }} branch to dev
+    - name: Fast-forward ${{ steps.commit_info.outputs.newlib_branch }} branch to dev
       run: |
         git fetch origin
-        git checkout -B ${{ steps.commit_info.outputs.gcc_branch }} origin/dev
-        git push origin ${{ steps.commit_info.outputs.gcc_branch }}
+        git checkout -B ${{ steps.commit_info.outputs.newlib_branch }} origin/dev
+        git push origin ${{ steps.commit_info.outputs.newlib_branch }}
 
 
     - name: Configure build
