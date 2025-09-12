@@ -1,0 +1,100 @@
+# Copyright(c) The Maintainers of Nanvix.
+# Licensed under the MIT License.
+
+name: Release Pipeline
+
+#==================================================================================================
+# Trigger Conditions
+#==================================================================================================
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+    branches:
+      - dev
+
+#==================================================================================================
+# Environment Variables
+#==================================================================================================
+
+env:
+  # Version of NewLib.
+  NEWLIB_VERSION: "4.4.0"
+  # Directory where NewLib will be installed.
+  RELEASE_INSTALL_LOCATION: /opt/nanvix
+
+#==================================================================================================
+# Jobs
+#==================================================================================================
+
+jobs:
+  release:
+    # Only run if the triggering workflow completed successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write  # Required for creating releases, tags, and updating branches
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.workflow_run.head_branch }}  # Check out the branch that triggered the workflow
+        fetch-depth: 0                                     # Fetch all history for branch operations
+
+    - name: Setup Git configuration
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Install dependencies
+      run: sudo ./z setup
+
+    - name: Get commit information
+      id: commit_info
+      run: |
+        SHORT_SHA=$(git rev-parse --short HEAD)
+        TAG_NAME="nanvix-v${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
+        RELEASE_NAME="nanvix-gcc-${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
+        NEWLIB_BRANCH="nanvix/v${{ env.NEWLIB_VERSION }}"
+        echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
+        echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+        echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+        echo "gcc_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
+
+    - name: Fast-forward ${{ steps.commit_info.outputs.gcc_branch }} branch to dev
+      run: |
+        git fetch origin
+        git checkout -B ${{ steps.commit_info.outputs.gcc_branch }} origin/dev
+        git push origin ${{ steps.commit_info.outputs.gcc_branch }}
+
+
+    - name: Configure build
+      run: ./z configure --install-location=${{ env.RELEASE_INSTALL_LOCATION }} --release-name=${{ steps.commit_info.outputs.release_name }}
+
+    - name: Create release archive
+      run: ./z release
+
+    - name: Create release tag
+      run: |
+        git tag ${{ steps.commit_info.outputs.tag_name }}
+        git push origin ${{ steps.commit_info.outputs.tag_name }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.commit_info.outputs.tag_name }}
+        name: "${{ steps.commit_info.outputs.tag_name }}"
+        body: |
+          Automated release of Nanvix NewLib ${{ env.NEWLIB_VERSION }}
+
+          Built from commit: ${{ github.sha }}
+
+          This release contains the complete NewLib toolchain configured for the Nanvix operating system target (i686-nanvix).
+        files: |
+          ${{ steps.commit_info.outputs.release_name }}.tar.bz2
+        draft: false
+        prerelease: false
