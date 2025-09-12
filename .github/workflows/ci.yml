@@ -1,0 +1,75 @@
+# Copyright(c) The Maintainers of Nanvix.
+# Licensed under the MIT License.
+
+name: CI/CD Pipeline
+
+#==================================================================================================
+# Trigger Conditions
+#==================================================================================================
+
+on:
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+      - 'reopened'
+      - 'ready_for_review'
+    branches:
+      - 'dev'
+
+  push:
+    branches:
+      - 'dev'
+
+# Cancel previous running actions for the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/dev' }}
+
+#==================================================================================================
+# Environment Variables
+#==================================================================================================
+
+env:
+  # Directory where NewLib will be installed.
+  INSTALL_LOCATION: /opt/nanvix
+
+#==================================================================================================
+# Jobs
+#==================================================================================================
+
+jobs:
+  build:
+    # Only run the CI for:
+    # - Pushes to 'dev' (handled by workflow triggers above)
+    # - Non-draft PRs where the source branch starts with one of:
+    #     'enhancement-', 'feature-', 'bugfix-', 'dependabot/', or 'copilot/'
+    if: |
+      github.event_name != 'pull_request' ||
+      (
+        !github.event.pull_request.draft &&
+        (
+          startsWith(github.head_ref, 'enhancement-') ||
+          startsWith(github.head_ref, 'feature-') ||
+          startsWith(github.head_ref, 'bugfix-') ||
+          startsWith(github.head_ref, 'dependabot/') ||
+          startsWith(github.head_ref, 'copilot/')
+        )
+      )
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: sudo ./z setup
+
+    - name: Configure Newlib
+      run: ./z configure --install-location=${{ env.INSTALL_LOCATION }}
+
+    - name: Build NewLib
+      run: ./z build
+
+    - name: Install NewLib
+      run: ./z install
