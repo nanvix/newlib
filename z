@@ -9,8 +9,8 @@
 #
 #   - Z_TARGET: Target architecture.
 #   - Z_STAGE: Build stage.
-#   - Z_Z_INSTALL_LOCATION: Installation directory.
-#   - Z_Z_SYSROOT_LOCATION: Sysroot directory.
+#   - Z_INSTALL_LOCATION: Installation directory.
+#   - Z_SYSROOT_LOCATION: Sysroot directory.
 #   - Z_RELEASE_NAME: Release name.
 #
 # shellcheck disable=SC2329
@@ -60,7 +60,7 @@ source "${utils_script}"
 # Z Constants
 #==================================================================================================
 
-# Project Name
+# Project name.
 readonly Z_PROJECT_NAME="NewLib"
 # Directory used when building, empty if not required.
 readonly Z_PROJECT_BUILD_DIR=""
