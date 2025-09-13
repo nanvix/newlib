@@ -76,13 +76,6 @@ jobs:
         echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
         echo "newlib_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
 
-    - name: Fast-forward ${{ steps.commit_info.outputs.newlib_branch }} branch to dev
-      run: |
-        git fetch origin
-        git checkout -B ${{ steps.commit_info.outputs.newlib_branch }} origin/dev
-        git push origin ${{ steps.commit_info.outputs.newlib_branch }}
-
-
     - name: Configure build
       run: ./z configure --install-location=${{ env.RELEASE_INSTALL_LOCATION }} --release-name=${{ steps.commit_info.outputs.release_name }}
 
@@ -93,6 +86,12 @@ jobs:
       run: |
         git tag ${{ steps.commit_info.outputs.tag_name }}
         git push origin ${{ steps.commit_info.outputs.tag_name }}
+
+    - name: Fast-forward ${{ steps.commit_info.outputs.newlib_branch }} branch to dev
+      run: |
+        git fetch origin
+        git checkout -B ${{ steps.commit_info.outputs.newlib_branch }} origin/dev
+        git push origin ${{ steps.commit_info.outputs.newlib_branch }}
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
