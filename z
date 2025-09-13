@@ -26,7 +26,7 @@ set -euo pipefail
 # Import Utils Script
 #==================================================================================================
 
-UTILS_SCRIPT_VERSION="f8b25adabc6a88cc7c76a4439f5a3e857ba386a1"
+UTILS_SCRIPT_VERSION="a9291960bef131ac85fe66bfdc0fdfd2ddc278c4"
 UTILS_SCRIPT_URL="https://raw.githubusercontent.com/nanvix/scripts/${UTILS_SCRIPT_VERSION}/utils.sh"
 
 utils_script="/tmp/utils-${UTILS_SCRIPT_VERSION}.sh"
@@ -89,9 +89,9 @@ readonly INSTALL_TARGETS=("install")
 
 # GCC.
 readonly GCC_VERSION="12.4.0"
-readonly GCC_SHORT_COMMIT_HASH="260bbd1b0c9"
+readonly GCC_SHORT_COMMIT_HASH="cd2f75b2e55"
 readonly GCC_URL="https://github.com/nanvix/gcc/releases/download/nanvix-v${GCC_VERSION}-${GCC_SHORT_COMMIT_HASH}/nanvix-gcc-${GCC_VERSION}-${GCC_SHORT_COMMIT_HASH}-stage0.tar.bz2"
-readonly GCC_SHA256_CHECKSUM="sha256:e03d5aff3f9dbff1399998b8602ae5f33b9ef8b7bf7bac01849ebd624a97bc10"
+readonly GCC_SHA256_CHECKSUM="sha256:f4270b07e81497f0dd8851d83248d5958a87d2f4af8537f2bb5f0a1be7b25a64"
 
 #==================================================================================================
 # Project-Specific Functions
