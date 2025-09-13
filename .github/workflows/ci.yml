@@ -62,6 +62,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Run sccache-cache
+      uses: mozilla-actions/sccache-action@v0.0.9
+
     - name: Install dependencies
       run: sudo ./z setup
 
