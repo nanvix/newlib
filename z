@@ -141,6 +141,11 @@ download_steps() {
 #   configure_steps "i686-nanvix" "/usr/local"
 #
 configure_steps() {
+    # Enable compilation caching if possible.
+    enable_compilation_caching || {
+        print_warning "Compilation caching disabled."
+    }
+
     ./configure \
         --target="${Z_TARGET}" \
         --prefix="${Z_INSTALL_LOCATION}" \
@@ -167,6 +172,11 @@ configure_steps() {
 #
 build_steps() {
     local parallel_build_option=$1
+
+    # Enable compilation caching if possible.
+    enable_compilation_caching || {
+        print_warning "Compilation caching disabled."
+    }
 
     make -j "${parallel_build_option}" "${BUILD_TARGETS[@]}" || {
         print_error "Build failed for targets: '${BUILD_TARGETS[*]}'."
