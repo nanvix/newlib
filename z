@@ -206,6 +206,19 @@ install_steps() {
         return 1
     }
 
+    # Create includes directory.
+    mkdir -p "${Z_INSTALL_LOCATION}/usr/include" || {
+        print_error "Failed to create '${Z_INSTALL_LOCATION}/usr/include' directory."
+        return 1
+    }
+
+    # Copy headers to include directory.
+    # NOTE: This is a workaround for GCC fix-includes (https://forum.osdev.org/viewtopic.php?t=26999)
+    cp -r "${Z_INSTALL_LOCATION}/${Z_TARGET}/include/" "${Z_INSTALL_LOCATION}/usr/" || {
+        print_error "Failed to copy include files."
+        return 1
+    }
+
     return 0
 }
 
