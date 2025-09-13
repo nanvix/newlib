@@ -120,10 +120,7 @@ jobs:
 
           echo "Updating z: version=$version short_hash=$short_hash sha256=$sha"
 
-          sed -E -i "s/^readonly GCC_VERSION=.*/readonly GCC_VERSION=\"${version}\"/" z
           sed -E -i "s/^readonly GCC_SHORT_COMMIT_HASH=.*/readonly GCC_SHORT_COMMIT_HASH=\"${short_hash}\"/" z
-          # Quote the URL correctly
-          sed -E -i "s#^readonly GCC_URL=.*#readonly GCC_URL=\"${new_url}\"#" z
           sed -E -i "s#^readonly GCC_SHA256_CHECKSUM=.*#readonly GCC_SHA256_CHECKSUM=\"sha256:${sha}\"#" z
 
           git status --porcelain
@@ -139,7 +136,7 @@ jobs:
           body: |
             This PR updates the `z` utility to use the latest release of `nanvix/gcc` (${{ steps.release.outputs.version }}-${{ steps.release.outputs.short_hash }}).
 
-            - Updated: `GCC_VERSION`, `GCC_SHORT_COMMIT_HASH`, `GCC_URL`, `GCC_SHA256_CHECKSUM`
+            - Updated: `GCC_SHORT_COMMIT_HASH`, `GCC_SHA256_CHECKSUM`
 
             Generated automatically by the update workflow.
           base: dev
