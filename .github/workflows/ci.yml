@@ -70,7 +70,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-sccache
 
-    - name: Enable Compiler Caching
+    - name: Enable compiler caching
       uses: mozilla-actions/sccache-action@v0.0.9
 
     - name: Install dependencies

@@ -58,11 +58,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-sccache
 
-    - name: Enable Compiler Caching
+    - name: Enable compiler caching
       uses: mozilla-actions/sccache-action@v0.0.9
-
-    - name: Install dependencies
-      run: sudo ./z setup
 
     - name: Get commit information
       id: commit_info
@@ -75,6 +72,9 @@ jobs:
         echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
         echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
         echo "newlib_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
+
+    - name: Install dependencies
+      run: sudo ./z setup
 
     - name: Configure build
       run: ./z configure --install-location=${{ env.RELEASE_INSTALL_LOCATION }} --release-name=${{ steps.commit_info.outputs.release_name }}
