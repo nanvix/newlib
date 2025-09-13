@@ -82,16 +82,16 @@ jobs:
     - name: Create release archive
       run: ./z release
 
-    - name: Create release tag
-      run: |
-        git tag ${{ steps.commit_info.outputs.tag_name }}
-        git push origin ${{ steps.commit_info.outputs.tag_name }}
-
     - name: Fast-forward ${{ steps.commit_info.outputs.newlib_branch }} branch to dev
       run: |
         git fetch origin
         git checkout -B ${{ steps.commit_info.outputs.newlib_branch }} origin/dev
         git push origin ${{ steps.commit_info.outputs.newlib_branch }}
+
+    - name: Create release tag
+      run: |
+        git tag ${{ steps.commit_info.outputs.tag_name }}
+        git push origin ${{ steps.commit_info.outputs.tag_name }}
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
