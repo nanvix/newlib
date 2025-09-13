@@ -35,6 +35,33 @@ struct sockaddr_in
     char sin_zero[8];
 };
 
+/*
+ * IPv6 address
+ */
+struct in6_addr
+{
+    union {
+        uint8_t __u6_addr8[16];
+        uint16_t __u6_addr16[8];
+        uint32_t __u6_addr32[4];
+    } __u6_addr; /* 128-bit IP6 address */
+};
+
+#define s6_addr __u6_addr.__u6_addr8
+
+/*
+ * Socket address for IPv6.
+ */
+struct sockaddr_in6
+{
+    uint8_t sin6_len;          /* length of this struct */
+    sa_family_t sin6_family;   /* AF_INET6 */
+    in_port_t sin6_port;       /* Transport layer port # */
+    uint32_t sin6_flowinfo;    /* IP6 flow information */
+    struct in6_addr sin6_addr; /* IP6 address */
+    uint32_t sin6_scope_id;    /* scope zone index */
+};
+
 /* Used as values of the level argument of getsockopt() and setsockopt() */
 #define IPPROTO_IP 0   /* Internet protocol. */
 #define IPPROTO_ICMP 1 /* Control message protocol. */
@@ -60,6 +87,37 @@ struct sockaddr_in
 #endif /* __BSD_VISIBLE */
 
 /* INET_ADDRSTRLEN visible from <arpa/inet.h> */
+
+/* Length of the string from for IPv6 */
+#define INET6_ADDRSTRLEN 46
+
+/*
+ * Unspecified IPv6 address.
+ */
+#define IN6_IS_ADDR_UNSPECIFIED(a)                                                                                     \
+    ((a)->__u6_addr.__u6_addr32[0] == 0 && (a)->__u6_addr.__u6_addr32[1] == 0 && (a)->__u6_addr.__u6_addr32[2] == 0 && \
+     (a)->__u6_addr.__u6_addr32[3] == 0)
+
+/*
+ * Loopback IPv6 address.
+ */
+#define IN6_IS_ADDR_LOOPBACK(a)                                                                                        \
+    ((a)->__u6_addr.__u6_addr32[0] == 0 && (a)->__u6_addr.__u6_addr32[1] == 0 && (a)->__u6_addr.__u6_addr32[2] == 0 && \
+     (a)->__u6_addr.__u6_addr32[3] == ntohl(1))
+
+/*
+ * IPv4 compatible address.
+ */
+#define IN6_IS_ADDR_V4COMPAT(a)                                                                                        \
+    ((a)->__u6_addr.__u6_addr32[0] == 0 && (a)->__u6_addr.__u6_addr32[1] == 0 && (a)->__u6_addr.__u6_addr32[2] == 0 && \
+     (a)->__u6_addr.__u6_addr32[3] != 0 && (a)->__u6_addr.__u6_addr32[3] != ntohl(1))
+
+/*
+ * IPv4 mapped address.
+ */
+#define IN6_IS_ADDR_V4MAPPED(a)                                                                                        \
+    ((a)->__u6_addr.__u6_addr32[0] == 0 && (a)->__u6_addr.__u6_addr32[1] == 0 &&                                       \
+     (a)->__u6_addr.__u6_addr32[2] == ntohl(0x0000ffff))
 
 /* htonl() visible from <arpa/inet.h> */
 /* htons() visible from <arpa/inet.h> */
