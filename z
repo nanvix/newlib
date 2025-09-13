@@ -26,7 +26,7 @@ set -euo pipefail
 # Import Utils Script
 #==================================================================================================
 
-UTILS_SCRIPT_VERSION="a9291960bef131ac85fe66bfdc0fdfd2ddc278c4"
+UTILS_SCRIPT_VERSION="c24dedaf76a4833b388597805e2c0625cef0c453"
 UTILS_SCRIPT_URL="https://raw.githubusercontent.com/nanvix/scripts/${UTILS_SCRIPT_VERSION}/utils.sh"
 
 utils_script="/tmp/utils-${UTILS_SCRIPT_VERSION}.sh"
