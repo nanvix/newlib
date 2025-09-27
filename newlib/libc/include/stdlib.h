@@ -291,11 +291,18 @@ int	posix_memalign (void **, size_t, size_t) __nonnull((1))
 
 char *	_dtoa_r (struct _reent *, double, int, int, int *, int*, char**);
 #ifndef __CYGWIN__
+#if defined(__nanvix__)
+#define _malloc_r(r, s) malloc (s)
+#define _calloc_r(r, s1, s2) calloc (s1, s2)
+#define _free_r(r, p) free (p)
+#define _realloc_r(r, p, s) realloc (p, s)
+#else
 void *	_malloc_r (struct _reent *, size_t) _NOTHROW;
 void *	_calloc_r (struct _reent *, size_t, size_t) _NOTHROW;
 void	_free_r (struct _reent *, void *) _NOTHROW;
 void *	_realloc_r (struct _reent *, void *, size_t) _NOTHROW;
 void	_mstats_r (struct _reent *, char *);
+#endif
 #endif
 int	_system_r (struct _reent *, const char *);
 

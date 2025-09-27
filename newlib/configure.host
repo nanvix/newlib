@@ -510,14 +510,6 @@ case "${host}" in
 	sys_dir=sysvi386
 	unix_dir=unix
 	;;
-  i[34567]86-*-nanvix*)
- 	have_crt0=yes
-	unix_dir=
-	posix_dir=
-	sys_dir=nanvix
-	have_sys_mach_dir=yes
-	default_newlib_io_long_long="yes"
-	;;
 
   m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)
 	;;
@@ -541,6 +533,13 @@ case "${host}" in
   moxie*)
         sys_dir=
         ;;
+  *-nanvix*)
+ 	have_crt0=yes
+	unix_dir=
+	posix_dir=
+	sys_dir=nanvix
+	have_sys_mach_dir=yes
+	;;
   nios2*)
 	sys_dir=
 	;;
@@ -799,6 +798,11 @@ newlib_cflags="${newlib_cflags} -DCLOCK_PROVIDED -DMALLOC_PROVIDED -DEXIT_PROVID
 	default_newlib_io_long_long="yes"
 	newlib_cflags="${newlib_cflags} -Os -DPREFER_SIZE_OVER_SPEED -DSMALL_MEMORY"
         ;;
+  *-nanvix*)
+	default_newlib_io_long_long="yes"
+	syscall_dir=
+	newlib_cflags="${newlib_cflags} -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DMISSING_SYSCALL_NAMES"
+	;;
   nios2*)
 	syscall_dir=
 	newlib_cflags="${newlib_cflags} -DHAVE_RENAME -DHAVE_SYSTEM -DMISSING_SYSCALL_NAMES"

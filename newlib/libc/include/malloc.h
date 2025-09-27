@@ -35,7 +35,7 @@ struct mallinfo {
 /* The routines.  */
 
 extern void *malloc (size_t);
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined (__nanvix__)
 #undef _malloc_r
 #define _malloc_r(r, s) malloc (s)
 #else
@@ -43,7 +43,7 @@ extern void *_malloc_r (struct _reent *, size_t);
 #endif
 
 extern void free (void *);
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined (__nanvix__)
 #undef _free_r
 #define _free_r(r, p) free (p)
 #else
@@ -51,7 +51,7 @@ extern void _free_r (struct _reent *, void *);
 #endif
 
 extern void *realloc (void *, size_t);
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined (__nanvix__)
 #undef _realloc_r
 #define _realloc_r(r, p, s) realloc (p, s)
 #else
@@ -59,7 +59,7 @@ extern void *_realloc_r (struct _reent *, void *, size_t);
 #endif
 
 extern void *calloc (size_t, size_t);
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined (__nanvix__)
 #undef _calloc_r
 #define _calloc_r(r, s1, s2) calloc (s1, s2);
 #else
@@ -67,7 +67,7 @@ extern void *_calloc_r (struct _reent *, size_t, size_t);
 #endif
 
 extern void *memalign (size_t, size_t);
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined (__nanvix__)
 #undef _memalign_r
 #define _memalign_r(r, s1, s2) memalign (s1, s2);
 #else
