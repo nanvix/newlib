@@ -16,6 +16,7 @@
 #include <newlib.h>
 #include <sys/config.h>
 #include <sys/_intsup.h>
+#include <sys/_stdint.h>
 #include "_ansi.h"
 #include <stdint.h>
 #define __need_wchar_t
