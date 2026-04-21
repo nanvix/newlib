@@ -178,7 +178,9 @@ jobs:
 
     - name: Prepare Docker context
       if: steps.check_release.outputs.exists == 'false'
-      run: cp -r ${{ env.INSTALL_LOCATION }} ./docker-install
+      run: |
+        mkdir -p ./docker-install
+        cp -r "${{ env.INSTALL_LOCATION }}/." ./docker-install/
 
     - name: Set up Docker Buildx
       if: steps.check_release.outputs.exists == 'false'
