@@ -42,6 +42,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
+        ref: dev
         fetch-depth: 0
 
     - name: Setup Git configuration
@@ -63,10 +64,18 @@ jobs:
 
     - name: Check if release already exists
       id: check_release
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
-        if git tag -l "${{ steps.commit_info.outputs.tag_name }}" | grep -q .; then
-          echo "exists=true" >> $GITHUB_OUTPUT
-          echo "Release ${{ steps.commit_info.outputs.tag_name }} already exists, skipping."
+        TAG_NAME="${{ steps.commit_info.outputs.tag_name }}"
+        if git tag -l "${TAG_NAME}" | grep -q .; then
+          if gh release view "${TAG_NAME}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release ${TAG_NAME} already exists, skipping."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag ${TAG_NAME} exists but GitHub Release does not; continuing to recover from partial previous run."
+          fi
         else
           echo "exists=false" >> $GITHUB_OUTPUT
         fi
