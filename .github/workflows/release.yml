@@ -8,12 +8,13 @@ name: Release Pipeline
 #==================================================================================================
 
 on:
-  workflow_run:
-    workflows: ["CI/CD Pipeline"]
+  repository_dispatch:
     types:
-      - completed
-    branches:
-      - dev
+      - gcc-stage0-release
+
+concurrency:
+  group: release-newlib
+  cancel-in-progress: false
 
 #==================================================================================================
 # Environment Variables
@@ -23,7 +24,7 @@ env:
   # Version of NewLib.
   NEWLIB_VERSION: "4.4.0"
   # Directory where NewLib will be installed.
-  RELEASE_INSTALL_LOCATION: /opt/nanvix
+  INSTALL_LOCATION: /opt/nanvix
 
 #==================================================================================================
 # Jobs
@@ -31,35 +32,22 @@ env:
 
 jobs:
   release:
-    # Only run if the triggering workflow completed successfully
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-24.04
 
     permissions:
-      contents: write  # Required for creating releases, tags, and updating branches
+      contents: write
+      packages: write
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.event.workflow_run.head_branch }}  # Check out the branch that triggered the workflow
-        fetch-depth: 0                                     # Fetch all history for branch operations
+        fetch-depth: 0
 
     - name: Setup Git configuration
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-    - name: Restore sccache cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/sccache
-        key: ${{ runner.os }}-sccache
-        restore-keys: |
-          ${{ runner.os }}-sccache
-
-    - name: Enable compiler caching
-      uses: mozilla-actions/sccache-action@v0.0.9
 
     - name: Get commit information
       id: commit_info
@@ -73,27 +61,178 @@ jobs:
         echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
         echo "newlib_branch=${NEWLIB_BRANCH}" >> $GITHUB_OUTPUT
 
+    - name: Check if release already exists
+      id: check_release
+      run: |
+        if git tag -l "${{ steps.commit_info.outputs.tag_name }}" | grep -q .; then
+          echo "exists=true" >> $GITHUB_OUTPUT
+          echo "Release ${{ steps.commit_info.outputs.tag_name }} already exists, skipping."
+        else
+          echo "exists=false" >> $GITHUB_OUTPUT
+        fi
+
+    #----------------------------------------------------------------------------------------------
+    # Download Dependencies
+    #----------------------------------------------------------------------------------------------
+
+    - name: Download Binutils release
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        set -euo pipefail
+        BINUTILS_TAG="${{ github.event.client_payload.binutils_tag }}"
+        echo "Fetching Binutils release: ${BINUTILS_TAG}..."
+        RELEASE_JSON=$(curl -fsS \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/nanvix/binutils/releases/tags/${BINUTILS_TAG}")
+
+        ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("nanvix-binutils-.*\\.tar\\.bz2$")) | .browser_download_url' | head -n1)
+        echo "Downloading Binutils from: $ASSET_URL"
+
+        curl -fsS -L -o /tmp/nanvix-binutils.tar.bz2 "$ASSET_URL"
+        sudo mkdir -p ${{ env.INSTALL_LOCATION }}
+        sudo tar -xjf /tmp/nanvix-binutils.tar.bz2 -C ${{ env.INSTALL_LOCATION }}
+        echo "Binutils extracted to ${{ env.INSTALL_LOCATION }}"
+
+    - name: Download GCC stage 0 release
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        set -euo pipefail
+        GCC_TAG="${{ github.event.client_payload.gcc_tag }}"
+        echo "Fetching GCC stage 0 release: ${GCC_TAG}..."
+        RELEASE_JSON=$(curl -fsS \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/nanvix/gcc/releases/tags/${GCC_TAG}")
+
+        ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("nanvix-gcc-.*-stage0\\.tar\\.bz2$")) | .browser_download_url' | head -n1)
+        echo "Downloading GCC stage 0 from: $ASSET_URL"
+
+        curl -fsS -L -o /tmp/nanvix-gcc-stage0.tar.bz2 "$ASSET_URL"
+        sudo tar -xjf /tmp/nanvix-gcc-stage0.tar.bz2 -C ${{ env.INSTALL_LOCATION }}
+        echo "GCC stage 0 extracted to ${{ env.INSTALL_LOCATION }}"
+
+    #----------------------------------------------------------------------------------------------
+    # Build
+    #----------------------------------------------------------------------------------------------
+
+    - name: Restore sccache cache
+      if: steps.check_release.outputs.exists == 'false'
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/sccache
+        key: ${{ runner.os }}-sccache-release-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-sccache-release-
+          ${{ runner.os }}-sccache
+
+    - name: Enable compiler caching
+      if: steps.check_release.outputs.exists == 'false'
+      uses: mozilla-actions/sccache-action@v0.0.9
+
     - name: Install dependencies
+      if: steps.check_release.outputs.exists == 'false'
       run: sudo ./z setup
 
     - name: Configure build
-      run: ./z configure --install-location=${{ env.RELEASE_INSTALL_LOCATION }} --release-name=${{ steps.commit_info.outputs.release_name }}
+      if: steps.check_release.outputs.exists == 'false'
+      env:
+        Z_SYSROOT_LOCATION: ${{ env.INSTALL_LOCATION }}
+      run: ./z configure --install-location=${{ env.INSTALL_LOCATION }} --release-name=${{ steps.commit_info.outputs.release_name }}
+
+    - name: Build
+      if: steps.check_release.outputs.exists == 'false'
+      run: ./z build
+
+    - name: Install
+      if: steps.check_release.outputs.exists == 'false'
+      run: ./z install
+
+    #----------------------------------------------------------------------------------------------
+    # Smoke Test
+    #----------------------------------------------------------------------------------------------
+
+    - name: Cross-compile hello-world
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        export PATH="${{ env.INSTALL_LOCATION }}/bin:$PATH"
+        i686-nanvix-gcc -o /tmp/hello tests/hello.c
+        echo "Cross-compilation succeeded."
+
+    - name: Verify ELF output
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        export PATH="${{ env.INSTALL_LOCATION }}/bin:$PATH"
+        i686-nanvix-readelf -h /tmp/hello | grep -q ELF
+        echo "ELF verification passed."
+
+    #----------------------------------------------------------------------------------------------
+    # Release Artifacts
+    #----------------------------------------------------------------------------------------------
 
     - name: Create release archive
+      if: steps.check_release.outputs.exists == 'false'
       run: ./z release
 
-    - name: Fast-forward ${{ steps.commit_info.outputs.newlib_branch }} branch to dev
+    #----------------------------------------------------------------------------------------------
+    # Docker Image
+    #----------------------------------------------------------------------------------------------
+
+    - name: Prepare Docker context
+      if: steps.check_release.outputs.exists == 'false'
+      run: cp -r ${{ env.INSTALL_LOCATION }} ./docker-install
+
+    - name: Set up Docker Buildx
+      if: steps.check_release.outputs.exists == 'false'
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to GHCR
+      if: steps.check_release.outputs.exists == 'false'
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      if: steps.check_release.outputs.exists == 'false'
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true
+        tags: |
+          ghcr.io/nanvix/newlib:latest
+          ghcr.io/nanvix/newlib:${{ steps.commit_info.outputs.short_sha }}
+
+    - name: Make package public
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        curl -fsS -X PATCH \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/newlib" \
+          -d '{"visibility":"public"}' || true
+
+    #----------------------------------------------------------------------------------------------
+    # Git Operations
+    #----------------------------------------------------------------------------------------------
+
+    - name: Fast-forward release branch
+      if: steps.check_release.outputs.exists == 'false'
       run: |
         git fetch origin
         git checkout -B ${{ steps.commit_info.outputs.newlib_branch }} origin/dev
         git push origin ${{ steps.commit_info.outputs.newlib_branch }}
 
     - name: Create release tag
+      if: steps.check_release.outputs.exists == 'false'
       run: |
         git tag ${{ steps.commit_info.outputs.tag_name }}
         git push origin ${{ steps.commit_info.outputs.tag_name }}
 
     - name: Create GitHub Release
+      if: steps.check_release.outputs.exists == 'false'
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ steps.commit_info.outputs.tag_name }}
@@ -102,9 +241,35 @@ jobs:
           Automated release of Nanvix NewLib ${{ env.NEWLIB_VERSION }}
 
           Built from commit: ${{ github.sha }}
+          Triggered by: ${{ github.event.action }}
 
-          This release contains the complete NewLib toolchain configured for the Nanvix operating system target (i686-nanvix).
+          This release contains the NewLib C library configured for the Nanvix operating system target (i686-nanvix).
+
+          **Artifacts:**
+          - Tarball: `${{ steps.commit_info.outputs.release_name }}.tar.bz2`
+          - Docker: `ghcr.io/nanvix/newlib:${{ steps.commit_info.outputs.short_sha }}`
         files: |
           ${{ steps.commit_info.outputs.release_name }}.tar.bz2
         draft: false
         prerelease: false
+
+    #----------------------------------------------------------------------------------------------
+    # Cross-Repository Dispatch
+    #----------------------------------------------------------------------------------------------
+
+    - name: Dispatch to gcc
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        curl -fsS -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
+          https://api.github.com/repos/nanvix/gcc/dispatches \
+          -d '{
+            "event_type": "newlib-release",
+            "client_payload": {
+              "newlib_version": "${{ env.NEWLIB_VERSION }}",
+              "newlib_tag": "${{ steps.commit_info.outputs.tag_name }}",
+              "newlib_sha": "${{ steps.commit_info.outputs.short_sha }}",
+              "binutils_tag": "${{ github.event.client_payload.binutils_tag }}"
+            }
+          }'
