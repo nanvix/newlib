@@ -109,7 +109,9 @@ readonly GCC_SHA256_CHECKSUM="sha256:f4270b07e81497f0dd8851d83248d5958a87d2f4af8
 #
 download_steps() {
     # Download and extract GCC if sysroot location is not set.
-    if [[ -z "${Z_SYSROOT_LOCATION}" ]]; then
+    # Skip GCC download only when Binutils for the target is already installed
+    # (indicating we're in a Clang cross-compilation environment with Binutils).
+    if [[ -z "${Z_SYSROOT_LOCATION}" ]] && ! command -v "${Z_TARGET}-as" >/dev/null 2>&1; then
         local sysroot_location="${Z_INSTALL_LOCATION}"
 
         local gcc_tar_bz2_file
@@ -121,6 +123,8 @@ download_steps() {
             print_error "Failed to extract GCC."
             return 1
         }
+    elif command -v "${Z_TARGET}-as" >/dev/null 2>&1; then
+        print_info "Target Binutils detected; skipping GCC download."
     fi
 
     return 0
@@ -146,10 +150,35 @@ configure_steps() {
         print_warning "Compilation caching disabled."
     }
 
+    # Detect cross-compiler: prefer ${Z_TARGET}-gcc, fall back to clang
+    # (only when target Binutils are available).
+    local cc_for_target_flags=()
+    if command -v "${Z_TARGET}-gcc" >/dev/null 2>&1; then
+        print_info "Using GCC cross-compiler: ${Z_TARGET}-gcc"
+    elif command -v clang >/dev/null 2>&1 && command -v "${Z_TARGET}-as" >/dev/null 2>&1; then
+        print_info "Using Clang cross-compiler: clang --target=i686-unknown-nanvix"
+        # Clang is stricter than GCC: implicit function declarations are errors
+        # in C99+. Newlib code relies on implicit declarations in some places,
+        # so we downgrade to warnings for compatibility.
+        local clang_compat_flags="-Wno-error=implicit-function-declaration"
+        cc_for_target_flags=(
+            "CC_FOR_TARGET=clang --target=i686-unknown-nanvix ${clang_compat_flags}"
+            "CXX_FOR_TARGET=clang++ --target=i686-unknown-nanvix"
+            "AS_FOR_TARGET=${Z_TARGET}-as"
+            "LD_FOR_TARGET=${Z_TARGET}-ld"
+            "AR_FOR_TARGET=${Z_TARGET}-ar"
+            "RANLIB_FOR_TARGET=${Z_TARGET}-ranlib"
+        )
+    else
+        print_error "No cross-compiler found. Install ${Z_TARGET}-gcc or clang + ${Z_TARGET} Binutils."
+        return 1
+    fi
+
     ./configure \
         --target="${Z_TARGET}" \
         --prefix="${Z_INSTALL_LOCATION}" \
-        --disable-multilib || {
+        --disable-multilib \
+        "${cc_for_target_flags[@]}" || {
         print_error "Configuration failed."
         return 1
     }

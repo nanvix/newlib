@@ -11,6 +11,7 @@ on:
   repository_dispatch:
     types:
       - gcc-stage0-release
+      - llvm-stage0-release
 
 concurrency:
   group: release-newlib
@@ -50,12 +51,27 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+    - name: Determine compiler chain
+      id: compiler
+      run: |
+        EVENT_TYPE="${{ github.event.action }}"
+        if [ "$EVENT_TYPE" = "gcc-stage0-release" ]; then
+          echo "chain=gcc" >> $GITHUB_OUTPUT
+          echo "dispatch_target=nanvix/gcc" >> $GITHUB_OUTPUT
+          echo "dispatch_event=newlib-release" >> $GITHUB_OUTPUT
+        elif [ "$EVENT_TYPE" = "llvm-stage0-release" ]; then
+          echo "chain=clang" >> $GITHUB_OUTPUT
+          echo "dispatch_target=nanvix/llvm-project" >> $GITHUB_OUTPUT
+          echo "dispatch_event=newlib-clang-release" >> $GITHUB_OUTPUT
+        fi
+
     - name: Get commit information
       id: commit_info
       run: |
         SHORT_SHA=$(git rev-parse --short HEAD)
-        TAG_NAME="nanvix-v${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
-        RELEASE_NAME="nanvix-newlib-${{ env.NEWLIB_VERSION }}-${SHORT_SHA}"
+        CHAIN="${{ steps.compiler.outputs.chain }}"
+        TAG_NAME="nanvix-v${{ env.NEWLIB_VERSION }}-${SHORT_SHA}-${CHAIN}"
+        RELEASE_NAME="nanvix-newlib-${{ env.NEWLIB_VERSION }}-${SHORT_SHA}-${CHAIN}"
         NEWLIB_BRANCH="nanvix/v${{ env.NEWLIB_VERSION }}"
         echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
         echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
@@ -110,7 +126,7 @@ jobs:
         echo "Binutils extracted to ${{ env.INSTALL_LOCATION }}"
 
     - name: Download GCC stage 0 release
-      if: steps.check_release.outputs.exists == 'false'
+      if: steps.check_release.outputs.exists == 'false' && steps.compiler.outputs.chain == 'gcc'
       run: |
         set -euo pipefail
         GCC_TAG="${{ github.event.client_payload.gcc_tag }}"
@@ -130,6 +146,28 @@ jobs:
         curl -fsS -L -o /tmp/nanvix-gcc-stage0.tar.bz2 "$ASSET_URL"
         sudo tar -xjf /tmp/nanvix-gcc-stage0.tar.bz2 -C ${{ env.INSTALL_LOCATION }}
         echo "GCC stage 0 extracted to ${{ env.INSTALL_LOCATION }}"
+
+    - name: Download LLVM stage 0 release
+      if: steps.check_release.outputs.exists == 'false' && steps.compiler.outputs.chain == 'clang'
+      run: |
+        set -euo pipefail
+        LLVM_TAG="${{ github.event.client_payload.llvm_tag }}"
+        echo "Fetching LLVM stage 0 release: ${LLVM_TAG}..."
+        RELEASE_JSON=$(curl -fsS \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/nanvix/llvm-project/releases/tags/${LLVM_TAG}")
+
+        ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("nanvix-llvm-.*-stage0\\.tar\\.bz2$")) | .browser_download_url' | head -n1)
+        if [ -z "$ASSET_URL" ] || [ "$ASSET_URL" = "null" ]; then
+          echo "::error::No LLVM stage0 tarball asset found for tag ${LLVM_TAG}"
+          exit 1
+        fi
+        echo "Downloading LLVM stage 0 from: $ASSET_URL"
+
+        curl -fsS -L -o /tmp/nanvix-llvm-stage0.tar.bz2 "$ASSET_URL"
+        sudo tar -xjf /tmp/nanvix-llvm-stage0.tar.bz2 -C ${{ env.INSTALL_LOCATION }}
+        echo "LLVM stage 0 extracted to ${{ env.INSTALL_LOCATION }}"
 
     #----------------------------------------------------------------------------------------------
     # Build
@@ -169,11 +207,18 @@ jobs:
     # Smoke Test
     #----------------------------------------------------------------------------------------------
 
-    - name: Cross-compile hello-world
-      if: steps.check_release.outputs.exists == 'false'
+    - name: Cross-compile hello-world (GCC)
+      if: steps.check_release.outputs.exists == 'false' && steps.compiler.outputs.chain == 'gcc'
       run: |
         export PATH="${{ env.INSTALL_LOCATION }}/bin:$PATH"
         i686-nanvix-gcc -o /tmp/hello tests/hello.c
+        echo "Cross-compilation succeeded."
+
+    - name: Cross-compile hello-world (Clang)
+      if: steps.check_release.outputs.exists == 'false' && steps.compiler.outputs.chain == 'clang'
+      run: |
+        export PATH="${{ env.INSTALL_LOCATION }}/bin:$PATH"
+        clang --target=i686-unknown-nanvix -o /tmp/hello tests/hello.c
         echo "Cross-compilation succeeded."
 
     - name: Verify ELF output
@@ -276,19 +321,20 @@ jobs:
     # Cross-Repository Dispatch
     #----------------------------------------------------------------------------------------------
 
-    - name: Dispatch to gcc
+    - name: Dispatch to next repository
       if: steps.check_release.outputs.exists == 'false'
       run: |
         curl -fsS -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
-          https://api.github.com/repos/nanvix/gcc/dispatches \
+          https://api.github.com/repos/${{ steps.compiler.outputs.dispatch_target }}/dispatches \
           -d '{
-            "event_type": "newlib-release",
+            "event_type": "${{ steps.compiler.outputs.dispatch_event }}",
             "client_payload": {
               "newlib_version": "${{ env.NEWLIB_VERSION }}",
               "newlib_tag": "${{ steps.commit_info.outputs.tag_name }}",
               "newlib_sha": "${{ steps.commit_info.outputs.short_sha }}",
-              "binutils_tag": "${{ github.event.client_payload.binutils_tag }}"
+              "binutils_tag": "${{ github.event.client_payload.binutils_tag }}",
+              "llvm_tag": "${{ github.event.client_payload.llvm_tag }}"
             }
           }'
