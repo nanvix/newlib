@@ -157,8 +157,12 @@ configure_steps() {
         print_info "Using GCC cross-compiler: ${Z_TARGET}-gcc"
     elif command -v clang >/dev/null 2>&1 && command -v "${Z_TARGET}-as" >/dev/null 2>&1; then
         print_info "Using Clang cross-compiler: clang --target=i686-unknown-nanvix"
+        # Clang is stricter than GCC: implicit function declarations are errors
+        # in C99+. Newlib code relies on implicit declarations in some places,
+        # so we downgrade to warnings for compatibility.
+        local clang_compat_flags="-Wno-error=implicit-function-declaration"
         cc_for_target_flags=(
-            "CC_FOR_TARGET=clang --target=i686-unknown-nanvix"
+            "CC_FOR_TARGET=clang --target=i686-unknown-nanvix ${clang_compat_flags}"
             "CXX_FOR_TARGET=clang++ --target=i686-unknown-nanvix"
             "AS_FOR_TARGET=${Z_TARGET}-as"
             "LD_FOR_TARGET=${Z_TARGET}-ld"
