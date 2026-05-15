@@ -83,6 +83,29 @@ struct sockaddr_in6
  * bound to the loopback interface.
  */
 #if __BSD_VISIBLE
+#define IN_CLASSA(i) ((((in_addr_t)(i) & 0x80000000) == 0))
+#define IN_CLASSA_NET 0xff000000
+#define IN_CLASSA_NSHIFT 24
+#define IN_CLASSA_HOST 0x00ffffff
+#define IN_CLASSA_MAX 128
+
+#define IN_CLASSB(i) ((((in_addr_t)(i) & 0xc0000000) == 0x80000000))
+#define IN_CLASSB_NET 0xffff0000
+#define IN_CLASSB_NSHIFT 16
+#define IN_CLASSB_HOST 0x0000ffff
+#define IN_CLASSB_MAX 65536
+
+#define IN_CLASSC(i) ((((in_addr_t)(i) & 0xe0000000) == 0xc0000000))
+#define IN_CLASSC_NET 0xffffff00
+#define IN_CLASSC_NSHIFT 8
+#define IN_CLASSC_HOST 0x000000ff
+
+#define IN_MULTICAST(i) ((((in_addr_t)(i) & 0xf0000000) == 0xe0000000))
+#define IN_CLASSD(i) IN_MULTICAST(i)
+#define IN_CLASSD_NET 0xf0000000
+#define IN_CLASSD_NSHIFT 28
+#define IN_CLASSD_HOST 0x0fffffff
+
 #define INADDR_LOOPBACK ((in_addr_t)0x7f000001) /* IPv4 loopback address. */
 #endif /* __BSD_VISIBLE */
 
