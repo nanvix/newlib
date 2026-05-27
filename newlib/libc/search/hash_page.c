@@ -857,19 +857,41 @@ static int
 open_temp(hashp)
 	HTAB *hashp;
 {
+	/*
+	 * The sigprocmask() bracket below guards the mkstemp + unlink
+	 * window against a signal that would otherwise leave the temp
+	 * file behind.  Targets whose newlib build does not provide
+	 * sigprocmask() can opt out of that protection by defining
+	 * _NO_SIGPROCMASK via newlib_cflags in configure.host, in the
+	 * same style as the existing _NO_SIGSET / _NO_POPEN /
+	 * _NO_POSIX_SPAWN opt-outs (see newlib/configure.host).
+	 *
+	 * Effect of the opt-out: the mkstemp + unlink window is no
+	 * longer protected by a blocked signal mask.  On a target with
+	 * no asynchronous signal delivery, no handler can run in that
+	 * window so the protection was a no-op anyway.  The optional
+	 * fcntl(F_SETFD, ...) on the next line uses the same shape via
+	 * HAVE_FCNTL.
+	 */
+#ifndef _NO_SIGPROCMASK
 	sigset_t set, oset;
+#endif
 	static char namestr[] = "_hashXXXXXX";
 
-	/* Block signals; make sure file goes away at process exit. */
+#ifndef _NO_SIGPROCMASK
+	/* Block signals so the file is guaranteed unlinked. */
 	(void)sigfillset(&set);
 	(void)sigprocmask(SIG_BLOCK, &set, &oset);
+#endif
 	if ((hashp->fp = mkstemp(namestr)) != -1) {
 		(void)unlink(namestr);
 #ifdef HAVE_FCNTL
 		(void)fcntl(hashp->fp, F_SETFD, 1);
 #endif
 	}
+#ifndef _NO_SIGPROCMASK
 	(void)sigprocmask(SIG_SETMASK, &oset, (sigset_t *)NULL);
+#endif
 	return (hashp->fp != -1 ? 0 : -1);
 }
 

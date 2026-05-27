@@ -801,7 +801,7 @@ newlib_cflags="${newlib_cflags} -DCLOCK_PROVIDED -DMALLOC_PROVIDED -DEXIT_PROVID
   *-nanvix*)
 	default_newlib_io_long_long="yes"
 	syscall_dir=
-	newlib_cflags="${newlib_cflags} -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DMISSING_SYSCALL_NAMES"
+	newlib_cflags="${newlib_cflags} -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DMISSING_SYSCALL_NAMES -D_NO_SIGPROCMASK"
 	;;
   nios2*)
 	syscall_dir=
