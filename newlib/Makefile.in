@@ -3064,7 +3064,8 @@ am__objects_160 = libm/fenv/a-feclearexcept.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-invtrig.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-e_lgammal_r.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-k_cosl.$(OBJEXT) \
-@HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-k_sinl.$(OBJEXT)
+@HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-k_sinl.$(OBJEXT) \
+@HAVE_LIBM_MACHINE_AARCH64_FALSE@@HAVE_LIBM_MACHINE_RISCV_TRUE@	libm/ld128/a-k_tanl.$(OBJEXT)
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@am__objects_163 =  \
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-e_powl.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-s_erfl.$(OBJEXT) \
@@ -3075,7 +3076,8 @@ am__objects_160 = libm/fenv/a-feclearexcept.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-invtrig.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-e_lgammal_r.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-k_cosl.$(OBJEXT) \
-@HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-k_sinl.$(OBJEXT)
+@HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-k_sinl.$(OBJEXT) \
+@HAVE_LIBM_MACHINE_AARCH64_TRUE@	libm/ld128/a-k_tanl.$(OBJEXT)
 @HAVE_LIBM_MACHINE_AARCH64_TRUE@@HAVE_LONG_DOUBLE_TRUE@am__objects_164 = $(am__objects_163)
 @HAVE_LIBM_MACHINE_AMDGCN_TRUE@am__objects_165 = libm/machine/amdgcn/a-v64_mathcnst.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_AMDGCN_TRUE@	libm/machine/amdgcn/a-v64_reent.$(OBJEXT) \
@@ -3247,7 +3249,8 @@ am__objects_160 = libm/fenv/a-feclearexcept.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-invtrig.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-e_lgammal_r.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-k_cosl.$(OBJEXT) \
-@HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-k_sinl.$(OBJEXT)
+@HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-k_sinl.$(OBJEXT) \
+@HAVE_LIBM_MACHINE_I386_FALSE@@HAVE_LIBM_MACHINE_X86_64_TRUE@	libm/ld80/a-k_tanl.$(OBJEXT)
 @HAVE_LIBM_MACHINE_I386_TRUE@am__objects_171 =  \
 @HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-b_tgammal.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-e_powl.$(OBJEXT) \
@@ -3260,7 +3263,8 @@ am__objects_160 = libm/fenv/a-feclearexcept.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-invtrig.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-e_lgammal_r.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-k_cosl.$(OBJEXT) \
-@HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-k_sinl.$(OBJEXT)
+@HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-k_sinl.$(OBJEXT) \
+@HAVE_LIBM_MACHINE_I386_TRUE@	libm/ld80/a-k_tanl.$(OBJEXT)
 @HAVE_LIBM_MACHINE_I386_TRUE@@HAVE_LONG_DOUBLE_TRUE@am__objects_172 = $(am__objects_171)
 @HAVE_LIBM_MACHINE_MIPS_TRUE@am__objects_173 = libm/machine/mips/a-feclearexcept.$(OBJEXT) \
 @HAVE_LIBM_MACHINE_MIPS_TRUE@	libm/machine/mips/a-fegetenv.$(OBJEXT) \
@@ -5346,6 +5350,7 @@ am__depfiles_remade = libc/argz/$(DEPDIR)/a-argz_add.Po \
 	libm/ld128/$(DEPDIR)/a-invtrig.Po \
 	libm/ld128/$(DEPDIR)/a-k_cosl.Po \
 	libm/ld128/$(DEPDIR)/a-k_sinl.Po \
+	libm/ld128/$(DEPDIR)/a-k_tanl.Po \
 	libm/ld128/$(DEPDIR)/a-s_erfl.Po \
 	libm/ld128/$(DEPDIR)/a-s_exp2l.Po \
 	libm/ld128/$(DEPDIR)/a-s_expl.Po \
@@ -5356,6 +5361,7 @@ am__depfiles_remade = libc/argz/$(DEPDIR)/a-argz_add.Po \
 	libm/ld80/$(DEPDIR)/a-invtrig.Po \
 	libm/ld80/$(DEPDIR)/a-k_cosl.Po \
 	libm/ld80/$(DEPDIR)/a-k_sinl.Po \
+	libm/ld80/$(DEPDIR)/a-k_tanl.Po \
 	libm/ld80/$(DEPDIR)/a-s_cospil.Po \
 	libm/ld80/$(DEPDIR)/a-s_erfl.Po \
 	libm/ld80/$(DEPDIR)/a-s_exp2l.Po \
@@ -13127,6 +13133,8 @@ libm/ld128/a-k_cosl.$(OBJEXT): libm/ld128/$(am__dirstamp) \
 	libm/ld128/$(DEPDIR)/$(am__dirstamp)
 libm/ld128/a-k_sinl.$(OBJEXT): libm/ld128/$(am__dirstamp) \
 	libm/ld128/$(DEPDIR)/$(am__dirstamp)
+libm/ld128/a-k_tanl.$(OBJEXT): libm/ld128/$(am__dirstamp) \
+	libm/ld128/$(DEPDIR)/$(am__dirstamp)
 libm/machine/amdgcn/$(am__dirstamp):
 	@$(MKDIR_P) libm/machine/amdgcn
 	@: > libm/machine/amdgcn/$(am__dirstamp)
@@ -13638,6 +13646,8 @@ libm/ld80/a-e_lgammal_r.$(OBJEXT): libm/ld80/$(am__dirstamp) \
 libm/ld80/a-k_cosl.$(OBJEXT): libm/ld80/$(am__dirstamp) \
 	libm/ld80/$(DEPDIR)/$(am__dirstamp)
 libm/ld80/a-k_sinl.$(OBJEXT): libm/ld80/$(am__dirstamp) \
+	libm/ld80/$(DEPDIR)/$(am__dirstamp)
+libm/ld80/a-k_tanl.$(OBJEXT): libm/ld80/$(am__dirstamp) \
 	libm/ld80/$(DEPDIR)/$(am__dirstamp)
 libm/machine/mips/$(am__dirstamp):
 	@$(MKDIR_P) libm/machine/mips
@@ -16448,6 +16458,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-invtrig.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-k_cosl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-k_sinl.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-k_tanl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-s_erfl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-s_exp2l.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld128/$(DEPDIR)/a-s_expl.Po@am__quote@ # am--include-marker
@@ -16458,6 +16469,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-invtrig.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-k_cosl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-k_sinl.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-k_tanl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-s_cospil.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-s_erfl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@libm/ld80/$(DEPDIR)/a-s_exp2l.Po@am__quote@ # am--include-marker
@@ -46370,12 +46382,25 @@ libm/ld128/a-k_sinl.o: libm/ld128/k_sinl.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld128/a-k_sinl.o `test -f 'libm/ld128/k_sinl.c' || echo '$(srcdir)/'`libm/ld128/k_sinl.c
 
+libm/ld128/a-k_tanl.o: libm/ld128/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld128/a-k_tanl.o -MD -MP -MF libm/ld128/$(DEPDIR)/a-k_tanl.Tpo -c -o libm/ld128/a-k_tanl.o `test -f 'libm/ld128/k_tanl.c' || echo '$(srcdir)/'`libm/ld128/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld128/$(DEPDIR)/a-k_tanl.Tpo libm/ld128/$(DEPDIR)/a-k_tanl.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld128/k_tanl.c' object='libm/ld128/a-k_tanl.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld128/a-k_tanl.o `test -f 'libm/ld128/k_tanl.c' || echo '$(srcdir)/'`libm/ld128/k_tanl.c
+
 libm/ld128/a-k_sinl.obj: libm/ld128/k_sinl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld128/a-k_sinl.obj -MD -MP -MF libm/ld128/$(DEPDIR)/a-k_sinl.Tpo -c -o libm/ld128/a-k_sinl.obj `if test -f 'libm/ld128/k_sinl.c'; then $(CYGPATH_W) 'libm/ld128/k_sinl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld128/k_sinl.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld128/$(DEPDIR)/a-k_sinl.Tpo libm/ld128/$(DEPDIR)/a-k_sinl.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld128/k_sinl.c' object='libm/ld128/a-k_sinl.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld128/a-k_sinl.obj `if test -f 'libm/ld128/k_sinl.c'; then $(CYGPATH_W) 'libm/ld128/k_sinl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld128/k_sinl.c'; fi`
+libm/ld128/a-k_tanl.obj: libm/ld128/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld128/a-k_tanl.obj -MD -MP -MF libm/ld128/$(DEPDIR)/a-k_tanl.Tpo -c -o libm/ld128/a-k_tanl.obj `if test -f 'libm/ld128/k_tanl.c'; then $(CYGPATH_W) 'libm/ld128/k_tanl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld128/k_tanl.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld128/$(DEPDIR)/a-k_tanl.Tpo libm/ld128/$(DEPDIR)/a-k_tanl.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld128/k_tanl.c' object='libm/ld128/a-k_tanl.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld128/a-k_tanl.obj `if test -f 'libm/ld128/k_tanl.c'; then $(CYGPATH_W) 'libm/ld128/k_tanl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld128/k_tanl.c'; fi`
 
 libm/machine/amdgcn/a-v64_mathcnst.o: libm/machine/amdgcn/v64_mathcnst.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/machine/amdgcn/a-v64_mathcnst.o -MD -MP -MF libm/machine/amdgcn/$(DEPDIR)/a-v64_mathcnst.Tpo -c -o libm/machine/amdgcn/a-v64_mathcnst.o `test -f 'libm/machine/amdgcn/v64_mathcnst.c' || echo '$(srcdir)/'`libm/machine/amdgcn/v64_mathcnst.c
@@ -48554,12 +48579,25 @@ libm/ld80/a-k_sinl.o: libm/ld80/k_sinl.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld80/a-k_sinl.o `test -f 'libm/ld80/k_sinl.c' || echo '$(srcdir)/'`libm/ld80/k_sinl.c
 
+libm/ld80/a-k_tanl.o: libm/ld80/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld80/a-k_tanl.o -MD -MP -MF libm/ld80/$(DEPDIR)/a-k_tanl.Tpo -c -o libm/ld80/a-k_tanl.o `test -f 'libm/ld80/k_tanl.c' || echo '$(srcdir)/'`libm/ld80/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld80/$(DEPDIR)/a-k_tanl.Tpo libm/ld80/$(DEPDIR)/a-k_tanl.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld80/k_tanl.c' object='libm/ld80/a-k_tanl.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld80/a-k_tanl.o `test -f 'libm/ld80/k_tanl.c' || echo '$(srcdir)/'`libm/ld80/k_tanl.c
+
 libm/ld80/a-k_sinl.obj: libm/ld80/k_sinl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld80/a-k_sinl.obj -MD -MP -MF libm/ld80/$(DEPDIR)/a-k_sinl.Tpo -c -o libm/ld80/a-k_sinl.obj `if test -f 'libm/ld80/k_sinl.c'; then $(CYGPATH_W) 'libm/ld80/k_sinl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld80/k_sinl.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld80/$(DEPDIR)/a-k_sinl.Tpo libm/ld80/$(DEPDIR)/a-k_sinl.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld80/k_sinl.c' object='libm/ld80/a-k_sinl.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld80/a-k_sinl.obj `if test -f 'libm/ld80/k_sinl.c'; then $(CYGPATH_W) 'libm/ld80/k_sinl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld80/k_sinl.c'; fi`
+libm/ld80/a-k_tanl.obj: libm/ld80/k_tanl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/ld80/a-k_tanl.obj -MD -MP -MF libm/ld80/$(DEPDIR)/a-k_tanl.Tpo -c -o libm/ld80/a-k_tanl.obj `if test -f 'libm/ld80/k_tanl.c'; then $(CYGPATH_W) 'libm/ld80/k_tanl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld80/k_tanl.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libm/ld80/$(DEPDIR)/a-k_tanl.Tpo libm/ld80/$(DEPDIR)/a-k_tanl.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libm/ld80/k_tanl.c' object='libm/ld80/a-k_tanl.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -c -o libm/ld80/a-k_tanl.obj `if test -f 'libm/ld80/k_tanl.c'; then $(CYGPATH_W) 'libm/ld80/k_tanl.c'; else $(CYGPATH_W) '$(srcdir)/libm/ld80/k_tanl.c'; fi`
 
 libm/machine/mips/a-feclearexcept.o: libm/machine/mips/feclearexcept.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libm_a_CPPFLAGS) $(CPPFLAGS) $(libm_a_CFLAGS) $(CFLAGS) -MT libm/machine/mips/a-feclearexcept.o -MD -MP -MF libm/machine/mips/$(DEPDIR)/a-feclearexcept.Tpo -c -o libm/machine/mips/a-feclearexcept.o `test -f 'libm/machine/mips/feclearexcept.c' || echo '$(srcdir)/'`libm/machine/mips/feclearexcept.c
