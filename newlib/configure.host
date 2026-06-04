@@ -536,7 +536,7 @@ case "${host}" in
   *-nanvix*)
  	have_crt0=yes
 	unix_dir=
-	posix_dir=
+	posix_dir=posix
 	sys_dir=nanvix
 	have_sys_mach_dir=yes
 	;;
@@ -801,7 +801,7 @@ newlib_cflags="${newlib_cflags} -DCLOCK_PROVIDED -DMALLOC_PROVIDED -DEXIT_PROVID
   *-nanvix*)
 	default_newlib_io_long_long="yes"
 	syscall_dir=
-	newlib_cflags="${newlib_cflags} -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DMISSING_SYSCALL_NAMES -D_NO_SIGPROCMASK"
+	newlib_cflags="${newlib_cflags} -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DMISSING_SYSCALL_NAMES -D_NO_SIGPROCMASK -D_NO_POSIX_SPAWN -D_NO_POPEN -D_NO_WORDEXP -D_NO_GLOB -D_NO_EXECVE -DHAVE_OPENDIR"
 	;;
   nios2*)
 	syscall_dir=
