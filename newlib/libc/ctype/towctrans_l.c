@@ -5,6 +5,8 @@
 //#include <errno.h>
 #include "local.h"
 
+#ifdef _MB_CAPABLE
+
 /*
    struct caseconv_entry describes the case conversion behaviour
    of a range of Unicode characters.
@@ -160,3 +162,27 @@ towctrans_l (wint_t c, wctrans_t w, struct __locale_t *locale)
   else
     return c;
 }
+
+#else /* !_MB_CAPABLE */
+
+/* When _MB_CAPABLE is not defined, newlib does not compile the
+   JIS<->Unicode helpers (_jp2uc_l / _uc2jp_l) used above; their bodies
+   in jp2uc.c are wrapped in #ifdef _MB_CAPABLE.  In this configuration
+   the sibling locale wrappers towlower_l / towupper_l do not call
+   towctrans_l at all -- they delegate directly to the narrow-ctype-
+   backed towlower / towupper (see towlower_l.c, towupper_l.c).  Mirror
+   that behavior here so direct callers of towctrans / towctrans_l with
+   WCT_TOLOWER or WCT_TOUPPER see the same result as towlower_l /
+   towupper_l in the same configuration.  */
+wint_t
+towctrans_l (wint_t c, wctrans_t w, struct __locale_t *locale)
+{
+  (void) locale;
+  if (w == WCT_TOLOWER)
+    return towlower (c);
+  if (w == WCT_TOUPPER)
+    return towupper (c);
+  return c;
+}
+
+#endif /* _MB_CAPABLE */
