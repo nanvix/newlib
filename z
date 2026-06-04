@@ -178,6 +178,8 @@ configure_steps() {
         --target="${Z_TARGET}" \
         --prefix="${Z_INSTALL_LOCATION}" \
         --disable-multilib \
+        --enable-newlib-io-long-long \
+        --enable-newlib-io-c99-formats \
         "${cc_for_target_flags[@]}" || {
         print_error "Configuration failed."
         return 1
