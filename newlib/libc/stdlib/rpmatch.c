@@ -54,9 +54,12 @@ No supporting OS subroutines are required.
 #include <sys/cdefs.h>
 #include <sys/types.h>
 
+#include <stdlib.h>
+
+#ifndef _NO_REGEX
+
 #include <langinfo.h>
 #include <regex.h>
-#include <stdlib.h>
 
 int
 rpmatch (const char *response)
@@ -80,3 +83,37 @@ rpmatch (const char *response)
 	regfree(&no);
 	return (ret);
 }
+
+#else /* _NO_REGEX */
+
+/*
+ * Targets whose newlib build does not compile the POSIX regex engine
+ * (regcomp/regexec/regfree live in newlib/libc/posix, which is omitted on
+ * such targets) opt out by defining _NO_REGEX via newlib_cflags in
+ * configure.host, in the same style as the existing _NO_SIGPROCMASK /
+ * _NO_POPEN / _NO_POSIX_SPAWN opt-outs (see newlib/configure.host).
+ *
+ * Without the opt-out, rpmatch() would leave an unresolved reference to
+ * regcomp/regexec/regfree, which only surfaces when the containing object
+ * is force-included (e.g. ld --whole-archive).  Such targets provide only
+ * the C/POSIX locale, whose YESEXPR / NOEXPR are "^[yY]" / "^[nN]"; match
+ * that directly instead of going through the regex engine.
+ */
+int
+rpmatch (const char *response)
+{
+	if (response == NULL)
+		return (-1);
+	switch (response[0]) {
+	case 'y':
+	case 'Y':
+		return (1);
+	case 'n':
+	case 'N':
+		return (0);
+	default:
+		return (-1);
+	}
+}
+
+#endif /* _NO_REGEX */
